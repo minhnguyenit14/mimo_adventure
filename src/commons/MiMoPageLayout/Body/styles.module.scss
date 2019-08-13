@@ -1,0 +1,16 @@
+@import '~appConfig/app_vars';
+
+.bodyContainer {
+    padding: $bodyPadding;
+
+    @media screen and(max-width: $smallDevice) {
+        padding-left: 0;
+        padding-right: 0;
+        padding-top: $paddingContainer*2;
+
+    }
+}
+
+.img {
+    max-height: 600px;
+}

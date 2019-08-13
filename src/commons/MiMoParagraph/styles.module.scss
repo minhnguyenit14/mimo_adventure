@@ -1,0 +1,26 @@
+@import '~appConfig/app_vars';
+
+.Paragraph {
+    margin: 0 !important;
+    font-size: $fontSizeStandard !important;
+    font-family: $fontBodyFamily !important;
+    color: $textMain !important;
+}
+
+.buttonStyle {
+    font-weight: $fontBold;
+    font-variant-caps: all-petite-caps;
+    letter-spacing: 1px;
+}
+
+.linkStyle {
+    &:hover {
+        cursor: pointer;
+        color: $textMainHover !important;
+    }
+
+    &:active {
+        cursor: pointer;
+        color: $textMainActive !important;
+    }
+}

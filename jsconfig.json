@@ -1,0 +1,28 @@
+{
+    "compilerOptions": {
+        "baseUrl": "./src",
+        "paths": {
+            "app-commons": [
+                "./commons"
+            ],
+            "app-containers": [
+                "./containers"
+            ],
+            "app-constants": [
+                "./constants"
+            ],
+            "app-helpers/*": [
+                "./helpers/*"
+            ],
+            "app-config/*": [
+                "./appConfig/*"
+            ],
+            "app-assets/*": [
+                "./assets/*"
+            ],
+            "app-redux/*": [
+                "./redux/*"
+            ]
+        }
+    }
+}

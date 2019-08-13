@@ -1,0 +1,12 @@
+@import '~appConfig/app_vars';
+
+button {
+    color: $textMain;
+}
+
+.buttonContainer {
+    font-family: $fontBodyFamily;
+    font-size: inherit !important;
+    display: inline-flex !important;
+    justify-content: center;
+}

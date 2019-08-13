@@ -1,0 +1,17 @@
+@import '~appConfig/app_vars';
+
+.inputContainer {
+    input {
+        font-family: $fontBodyFamily !important;
+        font-size: inherit !important;
+        color: $textMain !important;
+
+        &:hover,
+        &:active,
+        &:focus {
+            border-color: inherit !important;
+            box-shadow: none !important;
+            -webkit-box-shadow: none !important;
+        }
+    }
+}

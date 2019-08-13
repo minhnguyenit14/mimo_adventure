@@ -1,0 +1,32 @@
+@import '~appConfig/app_vars';
+
+.cardContainer {
+    background-color: #fff;
+
+    &:hover {
+        cursor: pointer;
+        box-shadow: $boxShadow;
+        -webkit-box-shadow: $boxShadow;
+    }
+
+    &:active {
+        cursor: pointer;
+        opacity: .9;
+        box-shadow: none;
+    }
+}
+
+.textContainer {
+    margin-top: $marginContainer;
+    padding-left: $paddingContainer;
+    padding-right: $paddingContainer;
+}
+
+.caption {
+    margin-bottom: $marginContainer/3;
+
+    @media screen and (max-width: $smallDevice) {
+        margin-bottom: $marginContainer/5;
+        width: 100%;
+    }
+}

@@ -1,0 +1,25 @@
+@import '~appConfig/app_vars.scss';
+
+h1,
+h2,
+h3 {
+    font-family: $fontHeadingFamily !important;
+    color: $textHeading !important;
+    font-weight: $fontBold!important;
+}
+
+// h1 {
+//     font-size: 2rem !important;
+// }
+
+// h2 {
+//     font-size: 1.5rem !important;
+// }
+
+// h3 {
+//     font-size: 1.1rem !important;
+// }
+
+.center {
+    text-align: center;
+}

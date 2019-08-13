@@ -1,0 +1,11 @@
+@import '~appConfig/app_vars';
+
+span {
+    font-family: $fontBodyFamily !important;
+    font-size: $fontSizeSmall !important;
+    color: $textSecondary !important;
+
+    @media screen and(max-width: $smallDevice) {
+        font-size: .8rem !important;
+    }
+}

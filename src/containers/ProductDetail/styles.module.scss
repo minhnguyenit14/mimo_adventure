@@ -1,0 +1,101 @@
+@import '~appConfig/app_vars';
+
+.body {
+    padding: 0;
+    margin-top: $headerHeight;
+
+    @media screen and (max-width: $smallDevice) {
+        margin-top: $headerMobileHeight;
+
+    }
+}
+
+.introContainer {
+    background-color: $productBg;
+    padding: $paddingContainer * 5;
+    padding-top: $paddingContainer * 2;
+
+    @media screen and(max-width: $smallDevice) {
+        padding: 0;
+        padding-top: $paddingContainer;
+    }
+}
+
+.category {
+    font-size: 1.5rem !important;
+    font-weight: 600;
+    margin-bottom: $paddingContainer*2 !important;
+    color: $textSecondary !important;
+    font-variant-caps: all-petite-caps;
+    letter-spacing: 1px;
+
+    @media screen and(max-width: $smallDevice) {
+        margin-bottom: $paddingContainer !important;
+        @include flexHorizontalCenter;
+
+        &::before {
+            content: '--';
+            margin-right: $marginContainer;
+        }
+
+        &::after {
+            content: '--';
+            margin-left: $marginContainer;
+        }
+    }
+
+    @media screen and(min-width: $smallDevice) {
+        &::before {
+            content: '•';
+            margin-right: $marginContainer;
+        }
+    }
+}
+
+.imageContainer {
+    flex: 58.3333%;
+    -webkit-flex: 58.3333%;
+
+    @media screen and(max-width: $smallDevice) {
+        flex: unset;
+        -webkit-flex: unset;
+    }
+
+    @media screen and(max-width: $largeDevice) {
+        flex: 50%;
+        -webkit-flex: 50%;
+    }
+}
+
+.intro {
+    @include flexCenter;
+    padding: $paddingContainer;
+    flex: 32.6667%;
+    -webkit-flex: 32.6667%;
+
+    @media screen and(max-width: $smallDevice) {
+        align-self: center;
+        margin-bottom: $paddingContainer;
+        flex: unset;
+        -webkit-flex: unset;
+    }
+
+    @media screen and(max-width: $largeDevice) {
+        flex: 50%;
+        -webkit-flex: 50%;
+    }
+}
+
+.caption {
+    margin-top: $bodyPadding;
+
+    @media screen and(max-width: $smallDevice) {
+        margin-top: $paddingContainer;
+
+    }
+}
+
+.longDes {
+    padding: $bodyPadding;
+    background-color: $bg;
+}

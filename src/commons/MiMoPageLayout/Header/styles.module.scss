@@ -1,0 +1,142 @@
+@import '~appConfig/app_vars';
+
+$bgHeader: #fff;
+
+@mixin headerTheme {
+    background-color: $bgHeader;
+}
+
+
+[class*="ant-btn"] {
+    color: $textMain !important;
+    --antd-wave-shadow-color: rgba(0, 0, 0, .65) !important;
+}
+
+@mixin transparentButton {
+    border: none !important;
+    box-shadow: none !important;
+    background-color: inherit !important;
+    -webkit-box-shadow: 0 0 0 0 rgba(0, 0, 0, 0) !important;
+    -webkit-animation: none !important;
+
+    &:focus,
+    &:active,
+    &:visited {
+        color: $textMainHover !important;
+        box-shadow: none !important;
+        -webkit-box-shadow: none !important;
+        -webkit-animation: none !important;
+    }
+}
+
+.headerWrapper {
+    @include headerTheme;
+    flex: none;
+}
+
+.headerContainer {
+    @include headerTheme;
+    @include appSize;
+    padding: 0 $paddingContainer 0 $paddingContainer;
+    flex-direction: row !important;
+    -webkit-flex-direction: row !important;
+    position: fixed;
+    top: 0;
+    z-index: 10;
+    height: $headerHeight;
+
+    @media screen and (max-width: $smallDevice) {
+        padding: $paddingContainer/2 0 $paddingContainer/2 0;
+        height: $headerMobileHeight;
+    }
+}
+
+.slider {
+    padding-top: $headerHeight;
+    @include headerTheme();
+
+    @media screen and (max-width: $smallDevice) {
+        padding-top: $headerMobileHeight;
+    }
+}
+
+.searchBar {
+    position: fixed;
+    margin: 0 auto;
+    top: $headerMobileHeight;
+    right: 0;
+    left: 0;
+    width: 100%;
+    z-index: 10;
+    padding-right: $paddingContainer *3;
+    padding-left: $paddingContainer *3;
+    padding-bottom: $paddingContainer;
+    background-color: $bg;
+    transform: translateY(-150%);
+    -webkit-transform: translateY(-150%);
+    -webkit-transition: $transition;
+    transition: $transition;
+}
+
+.showSearchBar {
+    transform: translateY(0%);
+}
+
+.menu {
+    height: $headerHeight;
+    border: none !important;
+}
+
+.imgContainer {
+    width: auto;
+    max-width: 150px;
+    height: 100%;
+    >img {
+        height: $headerHeight *.8;
+    }
+
+    &:hover {
+        cursor: pointer;
+    }
+
+    @media screen and (max-width: $smallDevice) {
+        align-items: center !important;
+        margin-right: 0;
+
+        &:focus,
+        &:-webkit-focus {
+            box-shadow: $boxShadow;
+        }
+    }
+}
+
+.searchLaptopContainer {
+    display: flex;
+    display: -webkit-flex;
+}
+
+.searchLaptop {
+    max-width: 70%;
+    align-self: flex-end;
+
+    input {
+        border-top: none !important;
+        border-left: none !important;
+        border-right: none !important;
+        outline: none !important;
+        box-shadow: none !important;
+    }
+}
+
+.searchMobileContainer {
+    align-self: flex-end;
+}
+
+.searchMobile {
+    @include transparentButton;
+}
+
+.collapseBtn {
+    align-self: flex-start !important;
+    @include transparentButton;
+}

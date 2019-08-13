@@ -1,0 +1,28 @@
+@import '~appConfig/app_vars';
+
+[class*="slick-arrow"] {
+    z-index: 1;
+
+    &::before {
+        color: rgba(255, 255, 255, .45);
+    }
+}
+
+[class*="slick-next"] {
+    right: $paddingContainer !important;
+}
+
+[class*="slick-prev"] {
+    left: $paddingContainer !important;
+}
+
+[class*="slick-dots"] {
+    text-align: -webkit-right !important;
+    text-align: end !important;
+    bottom: $paddingContainer !important;
+    padding-right: $paddingContainer !important;
+
+    @media screen and (max-width: $smallDevice) {
+        bottom: $paddingContainer/2 !important;
+    }
+}

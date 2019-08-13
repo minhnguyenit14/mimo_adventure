@@ -1,0 +1,9 @@
+.col {
+    position: relative;
+    flex: 1;
+    display: block;
+    -webkit-flex: 1;
+    flex-direction: column;
+    -webkit-flex-direction: column;
+    align-self: flex-start;
+}

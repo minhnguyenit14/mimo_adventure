@@ -1,0 +1,104 @@
+@import '~appConfig/app_vars';
+
+.footerContainer {
+    background-color: #f3f3f3;
+    padding-top: $paddingContainer * 4;
+    padding-bottom: $paddingContainer * 4;
+    padding-left: $paddingContainer;
+    padding-right: $paddingContainer;
+    display: flex;
+    display: -webkit-flex;
+    flex-direction: row;
+    -webkit-flex-direction: row;
+    flex: 1;
+    -webkit-flex: 1;
+    max-height: min-content;
+
+    @media screen and (max-width: $smallDevice) {
+        flex-direction: column;
+        -webkit-flex-direction: column;
+        padding: $paddingContainer;
+    }
+}
+
+.footerMenuContainer {
+    display: flex;
+    display: -webkit-flex;
+    flex-direction: column;
+    -webkit-flex-direction: column;
+    flex: .1;
+    -webkit-flex: .1;
+    justify-content: space-between;
+    padding-left: $paddingContainer;
+
+    @media screen and (max-width: $smallDevice) {
+        flex-direction: row;
+        -webkit-flex-direction: row;
+        @include flexHorizontalCenter;
+    }
+}
+
+.imgContainer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-right: $marginContainer*2;
+
+    @media screen and (max-width: $smallDevice) {
+        margin: 0;
+    }
+}
+
+.menuItem {
+    font-weight: $fontLightBold !important;
+    font-size: .9rem !important;
+
+    @media screen and (max-width: $smallDevice) {
+        margin: $marginContainer*2 auto !important;
+        text-align: center
+    }
+}
+
+.addressRow {
+    justify-content: space-between;
+
+    >svg {
+        margin-right: 5px;
+    }
+
+    @media screen and (max-width: $smallDevice) {
+        flex-direction: row;
+        -webkit-flex-direction: row;
+        margin-bottom: $marginContainer/2;
+    }
+}
+
+.companyInfoContainer {
+    flex: .35;
+    -webkit-flex: .35;
+    align-items: flex-end;
+
+    @media screen and (max-width: $smallDevice) {
+        align-items: center;
+    }
+}
+
+.companyInfo {
+    align-items: flex-end;
+    margin-top: $marginContainer;
+}
+
+.copyright {
+    flex: .55;
+    -webkit-flex: .55;
+    display: flex;
+    display: -webkit-flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding-right: $paddingContainer;
+
+    @media screen and (max-width: $smallDevice) {
+        justify-content: center;
+        margin-top: $marginContainer*2;
+    }
+}

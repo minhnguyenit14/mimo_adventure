@@ -1,0 +1,17 @@
+@import '~appConfig/app_vars';
+
+.row {
+    position: relative;
+    flex: 1;
+    display: flex;
+    display: -webkit-flex;
+    -webkit-flex: 1;
+    flex-direction: row;
+    -webkit-flex-direction: row;
+    align-items: center;
+
+    @media screen and (max-width: $smallDevice) {
+        flex-direction: column;
+        -webkit-flex-direction: column;
+    }
+}

@@ -1,0 +1,123 @@
+// typography
+$fontHeadingFamily: 'Muli',
+serif;
+$fontBodyFamily: 'Comfortaa',
+cursive;
+$fontSizeSmall: 13px;
+$fontSizeStandard: 16px;
+$fontSizeLarge: 18px;
+$fontSizeHeader: 24px;
+$fontExtraLight: 300;
+$fontLight: 300;
+$fontNormal: 400;
+$fontMedium: 500;
+$fontLightBold: 600;
+$fontBold: 700;
+$fontExtraBold: 800;
+$fontBlack: 900;
+
+//layout
+$underMobile: 767px;
+$mobile: 768px;
+$smallDevice: 992px;
+$largeDevice: 1200px;
+$fullHDDevice: 1980px;
+$maxWidthApp: $fullHDDevice;
+
+:export {
+    mobile: $mobile;
+    smallDevice: $smallDevice;
+    largeDevice: $largeDevice;
+    fullHDDevice: $fullHDDevice;
+}
+
+$headerHeight: 80px;
+$headerMobileHeight: 72px;
+$margin: 3.8vw;
+$paddingContainer: 15px;
+$bodyPadding: $paddingContainer *3;
+$marginContainer: 15px;
+
+// basic
+$shadow: rgba(51, 51, 51, 0.5);
+$boxShadow: 0 12px 16px rgba(0, 0, 0, 0.85);
+$bg: #FFF;
+$productBg: #f6f6f6;
+$navBg: rgba(255, 165, 0, 0.8);
+$borderColor: #D9D9D9;
+$borderColorDarker: #D8DCE6;
+$borderRadius: 4px;
+// text
+$textHeading: rgba(0, 0, 0, .85);
+$textMain: rgba(0, 0, 0, .65);
+$textMainHover: rgba(0, 0, 0, .55);
+$textMainActive: black;
+$textBase: #6B6C6F;
+$textSecondary: rgba(0, 0, 0, .45);
+// menu
+$menuInlineActive:rgba(0, 0, 0, .05);
+$menuActiveBorder: $textBase;
+//----colors-----
+$logo: #d6561d;
+$pinkHover: #E5A4CB;
+$pink: #EFC7E5;
+$blue: #BBDEF0;
+$blueHover: #80c3e6;
+$white: #ffffff;
+$green: #c4df9b;
+$blueOld: #1665D8;
+$orange: #F6AB2F;
+$red: #E6492D;
+$gray: #959595;
+$success: $green;
+$primary: $orange;
+$primaryHover: #ffb53b;
+$primaryActive: #dd8d0a;
+$warning: $red;
+$warningHover: #ff4b2c;
+$warningActive: #d42204;
+$error: $red;
+//----color pairs----
+$colorPairs: (white, #ffffff),
+(green, #38B249),
+(blue, #1665D8),
+(orange, #F6AB2F),
+(red, #d6561d),
+(red, #E6492D),
+(pink, #E5A4CB),
+(pink, #EFC7E5),
+(blue, #BBDEF0),
+(blue, #80c3e6);
+/*----transition----*/
+$animation: cubic-bezier(0.645, 0.045, 0.355, 1);
+$transition :all 0.3s $animation;
+
+/*----flex----*/
+@mixin flexCenter {
+    display: flex;
+    display: -webkit-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@mixin flexVerticalCenter {
+    display: flex;
+    display: -webkit-flex;
+    align-items: center;
+}
+
+@mixin flexHorizontalCenter {
+    display: flex;
+    display: -webkit-flex;
+    justify-content: center;
+}
+
+@mixin marginCenter {
+    margin: 0 auto;
+    width: 100%;
+}
+
+@mixin appSize {
+    @include marginCenter();
+    max-width: $maxWidthApp;
+}

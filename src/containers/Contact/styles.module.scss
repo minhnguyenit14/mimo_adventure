@@ -1,0 +1,67 @@
+@import '~appConfig/app_vars';
+
+@mixin companyInfo {
+    font-size: 1.2rem !important;
+}
+
+.bodyRoot {
+    @include flexCenter;
+    margin-top: $headerHeight;
+
+    @media screen and (max-width: $smallDevice) {
+        margin-top: $headerMobileHeight;
+
+    }
+    background-color: $bg;
+}
+
+.heading {
+    font-size: 1.5rem !important;
+    font-weight: 700;
+    font-variant-caps: all-petite-caps;
+    margin-bottom: $headerHeight*.75;
+}
+
+.companyName {
+    font-size: 3rem !important;
+    margin-bottom: 1rem !important;
+}
+
+.companyHeadOffice {
+    @include companyInfo();
+    margin-bottom: .75rem !important;
+}
+
+.phoneFax {
+    flex-direction: row !important;
+    margin-bottom: .5rem !important;
+}
+
+.companyPhone {
+    @include companyInfo();
+    margin-right: $marginContainer * 2 !important;
+    @include flexVerticalCenter;
+
+    @media (max-width: $smallDevice) {
+        margin-right: $marginContainer !important;
+    }
+}
+
+.companyFax {
+    @include companyInfo();
+    @include flexVerticalCenter;
+}
+
+.phoneIcon {
+    font-size: .8em!important;
+    margin-right: $marginContainer/3;
+}
+
+.faxIcon {
+    font-size: .8em!important;
+    margin-right: $marginContainer/3;
+}
+
+.companyFb{
+    @include companyInfo();
+}
