@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import { Menu } from 'antd';
 import { Heading, Container, Row } from 'app-commons';
 import cls from './styles.module.scss';
@@ -8,8 +8,25 @@ const { SubMenu, Item } = Menu;
 
 const slectedClassName = ' ant-menu-submenu-selected';
 
-class MiMoMenu extends PureComponent {
+class MiMoMenu extends Component {
     menu = null;
+    state = {
+        openKeys: this.props.openKeys
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        if (this.state !== nextState) {
+            return true;
+        }
+        if (nextProps.openKeys && nextProps.openKeys !== this.state.openKeys) {
+            this.setState({
+                openKeys: nextProps.openKeys
+            })
+            return false
+        }
+        return true;
+    }
+
     componentDidMount() {
         document.addEventListener('mousedown', this.handleClickOutSide);
         document.addEventListener('touchstart', this.handleClickOutSide);
@@ -107,6 +124,12 @@ class MiMoMenu extends PureComponent {
         return menu;
     }
 
+    handleOpenChange(openKeys) {
+        this.setState({
+            openKeys
+        })
+    }
+
     render() {
         const {
             className,
@@ -117,8 +140,10 @@ class MiMoMenu extends PureComponent {
             onCollapseMenu,
             refToggleButton,
             mode,
+            openKeys,
             ...menuProps
         } = this.props;
+        const { openKeys: openKeysState } = this.state;
         const menuMode = mode || (isMenuCollapsable ? "inline" : "horizontal");
         return (
             <Container
@@ -134,10 +159,10 @@ class MiMoMenu extends PureComponent {
                 <Menu
                     className={window.classnames(menuMode === 'horizontal' && cls.menu, className)}
                     mode={menuMode}
-                    // onClick={this.hanldeMenuClick.bind(this)}
+                    onOpenChange={this.handleOpenChange.bind(this)}
+                    openKeys={openKeysState}
                     {...menuProps}
                 >
-
                     {this.renderMenu()}
                 </Menu>
             </Container>

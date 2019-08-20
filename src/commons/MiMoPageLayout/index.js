@@ -5,13 +5,10 @@ import Footer from './Footer';
 import { Container } from 'app-commons';
 import cls from './styles.module.scss';
 
-class MiMoPageContainer extends PureComponent {
-    state = {}
-    // shouldComponentUpdate(){
-    //     console.log('layout')
-    //     return true;
-    // }
-    componentDidUpdate(){
+class MiMoPageLayout extends PureComponent {
+    state = {};
+    
+    componentDidUpdate() {
         console.log('layout')
 
     }
@@ -32,8 +29,8 @@ class MiMoPageContainer extends PureComponent {
     }
 }
 
-MiMoPageContainer.defaultProps = {
+MiMoPageLayout.defaultProps = {
     slidesData: []
 }
 
-export default MiMoPageContainer;
+export default MiMoPageLayout;

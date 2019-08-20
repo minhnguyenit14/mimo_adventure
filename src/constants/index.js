@@ -1,7 +1,17 @@
+import PATH from './path';
+
 export { default as PATH } from './path';
+export * from './api';
+export * from './query';
+export * from './status';
 
+export const MENU_HOME_ID = "home";
+export const MENU_PRODUCT_ID = "product";
+export const MENU_BLOG_ID = "blog";
+export const MENU_ABOUT_US_ID = "aboutUs";
+export const MENU_CONTACT_ID = "contact";
 
-export const PRODUCT = [
+export const PRODUCT_MENU = [
     {
         key: "1",
         title: "Đồ gỗ",
@@ -82,23 +92,72 @@ export const PRODUCT = [
 
 export const MENU = [
     {
-        key: "-1",
+        key: MENU_HOME_ID,
+        seoTitle: PATH.HOME,
         title: "Trang chủ",
         children: []
     },
     {
-        key: "-2",
+        key: MENU_PRODUCT_ID,
+        seoTitle: PATH.LIST_PRODUCTS,
         title: "Sản phẩm",
-        children: [...PRODUCT]
+        children: [...PRODUCT_MENU]
     },
     {
-        key: "-3",
+        key: MENU_BLOG_ID,
+        seoTitle: PATH.BLOG,
+        title: "Blog",
+        children: []
+    },
+    {
+        key: MENU_ABOUT_US_ID,
+        seoTitle: PATH.ABOUT_US,
         title: "Về chúng tôi",
         children: []
     },
     {
-        key: "-4",
+        key: MENU_CONTACT_ID,
+        seoTitle: PATH.CONTACT,
         title: "Liên hệ",
         children: []
+    },
+]
+
+export const PRODUCTS = [
+    {
+        id: '1',
+        src: require('assets/images/slick/1.jpg'),
+        title: 'Tượng phật Quan Âm',
+        subTitle: 'Tượng thạch'
+    },
+    {
+        id: '2',
+        src: require('assets/images/slick/2.jpg'),
+        title: 'Bàn gỗ sồi',
+        subTitle: 'Đồ gỗ'
+    },
+    {
+        id: '3',
+        src: require('assets/images/slick/3.jpg'),
+        title: 'Bình ngũ sắc',
+        subTitle: 'Đồ gốm'
+    },
+    {
+        id: '4',
+        src: require('assets/images/slick/1.jpg'),
+        title: 'Tượng phật Quan Âm',
+        subTitle: 'Tượng thạch'
+    },
+    {
+        id: '5',
+        src: require('assets/images/slick/2.jpg'),
+        title: 'Bàn gỗ sồi',
+        subTitle: 'Đồ gỗ'
+    },
+    {
+        id: '6',
+        src: require('assets/images/slick/3.jpg'),
+        title: 'Bình ngũ sắc',
+        subTitle: 'Đồ gốm'
     },
 ]

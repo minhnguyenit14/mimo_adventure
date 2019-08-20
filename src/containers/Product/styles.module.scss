@@ -8,7 +8,7 @@
     -webkit-flex: .25;
     max-width: 300px;
     margin-right: $marginContainer;
-    margin-top: $marginContainer * 4;
+    margin-top: $marginContainer * 5.5;
     align-self: flex-start;
 
     [class*="ant-menu-submenu-selected"] {
@@ -63,11 +63,10 @@
 
 .productHeading {
     text-indent: $paddingContainer*3;
-    margin-bottom: $marginContainer*2;
+    margin-bottom: $marginContainer*3.5;
     font-variant-caps: all-petite-caps;
     font-weight: 700;
     letter-spacing: 1.5px;
-    font-size: 1rem !important;
     color: $textMain !important;
 
     @media screen and(max-width: $smallDevice) {

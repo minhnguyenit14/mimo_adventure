@@ -24,6 +24,7 @@ $bgHeader: #fff;
     &:visited {
         color: $textMainHover !important;
         box-shadow: none !important;
+        animation: none !important;
         -webkit-box-shadow: none !important;
         -webkit-animation: none !important;
     }
@@ -70,6 +71,7 @@ $bgHeader: #fff;
     z-index: 10;
     padding-right: $paddingContainer *3;
     padding-left: $paddingContainer *3;
+    padding-top: $paddingContainer;
     padding-bottom: $paddingContainer;
     background-color: $bg;
     transform: translateY(-150%);
@@ -91,8 +93,9 @@ $bgHeader: #fff;
     width: auto;
     max-width: 150px;
     height: 100%;
+
     >img {
-        height: $headerHeight *.8;
+        height: $headerHeight *.7;
     }
 
     &:hover {

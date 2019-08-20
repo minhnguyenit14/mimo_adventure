@@ -3,16 +3,18 @@ import * as PropTypes from 'prop-types';
 import { MiMoContainerProps } from 'app-commons/MiMoContainer';
 
 export declare type MiMoCardProps = {
-    title?: String;
-    subTitle?: String;
-    src?: String;
-    contentClassName?: String;
-    onClick?: Function;
+    title?: String,
+    subTitle?: String,
+    description?: String,
+    src?: String,
+    contentClassName?: String,
+    onClick?: Function,
 } & MiMoContainerProps;
 
 declare class MiMoCard extends React.Component<MiMoCardProps, any> {
     static defaultProps: {
         title: String;
+        description: String;
         subTitle: String;
         src: String;
         contentClassName: String;
@@ -21,6 +23,7 @@ declare class MiMoCard extends React.Component<MiMoCardProps, any> {
     static propTypes: {
         title: React.Requireable<String>;
         subTitle: React.Requireable<String>;
+        description: React.Requireable<String>;
         src: React.Requireable<String>;
         contentClassName: React.Requireable<String>;
         onClick: React.Requireable<Function>;

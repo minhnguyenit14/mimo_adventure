@@ -3,7 +3,7 @@ import { Container, BackTop } from 'app-commons';
 import FlipMove from 'react-flip-move';
 import cls from './styles.module.scss';
 
-class PageContainer extends Component {
+class MiMoPageContainer extends Component {
     state = {};
     
     render() {
@@ -26,4 +26,4 @@ class PageContainer extends Component {
     }
 }
 
-export default PageContainer;
+export default MiMoPageContainer;

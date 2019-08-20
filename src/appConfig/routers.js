@@ -12,7 +12,9 @@ import {
     Product,
     ProductDetail,
     AboutUs,
-    Contact
+    Contact,
+    Blog,
+    NotFound
 } from 'app-containers';
 
 // constants
@@ -22,10 +24,12 @@ const Routers = () => {
     return (
         <Switch>
             <Route exact path={PATH.HOME} component={Home} />
-            <Route exact path={PATH.PRODUCT} component={Product} />
-            <Route exact path={`${PATH.PRODUCT}/:id`} component={ProductDetail} />
+            <Route path={[`${PATH.LIST_PRODUCTS}/:menuPath`, PATH.LIST_PRODUCTS]} component={Product} />
+            <Route exact path={`${PATH.PRODUCT}/:productID`} component={ProductDetail} />
+            <Route exact path={PATH.BLOG} component={Blog} />
             <Route exact path={PATH.ABOUT_US} component={AboutUs} />
             <Route exact path={PATH.CONTACT} component={Contact} />
+            <Route component={NotFound} />
         </Switch>
     )
 }

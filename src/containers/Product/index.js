@@ -1,107 +1,91 @@
 import React, { Component } from 'react';
-import { PageLayout, Image, Row, Col, Menu, Input, Heading, Card } from 'app-commons';
+import { PageLayout, Image } from 'app-commons';
 import cls from './styles.module.scss';
-import { PRODUCT, PATH } from 'app-constants';
-const products = [
-    {
-        id: 1,
-        src: require('assets/images/slick/1.jpg'),
-        title: 'Tượng phật Quan Âm',
-        subTitle: '$199'
-    },
-    {
-        id: 2,
-        src: require('assets/images/slick/2.jpg'),
-        title: 'Bàn gỗ sồi',
-        subTitle: '$25'
-    },
-    {
-        id: 3,
-        src: require('assets/images/slick/3.jpg'),
-        title: 'Bình ngũ sắc',
-        subTitle: '$15.5'
-    },
-    {
-        id: 4,
-        src: require('assets/images/slick/1.jpg'),
-        title: 'Tượng phật Quan Âm',
-        subTitle: '$199'
-    },
-    {
-        id: 5,
-        src: require('assets/images/slick/2.jpg'),
-        title: 'Bàn gỗ sồi',
-        subTitle: '$25'
-    },
-    {
-        id: 6,
-        src: require('assets/images/slick/3.jpg'),
-        title: 'Bình ngũ sắc',
-        subTitle: '$15.5'
-    },
-]
+import { GET_HOME_BANNER } from 'app-constants';
+import {
+    getStorage,
+    setStorage,
+    willUpdateState,
+    addUrlToImages
+} from 'app-helpers';
+import { BANNER_PATH_KEY, ADMIN_URL_KEY } from 'app-config/network';
+import { default as ProductComp } from './Product';
+
+
 class Product extends Component {
     state = {
-        selectedMenuKey: '0',
-        searchValue: '',
-        slidesData: [
-            <Image key={1} src={require('app-assets/images/slick/1.jpg')} />,
-            <Image key={2} src={require('app-assets/images/slick/2.jpg')} />,
-            <Image key={3} src={require('app-assets/images/slick/3.jpg')} />,
-        ]
+        slidesData: []
     };
+    unmounted = false;
 
-    hanldeMenuClick = (e) => this.setState({
-        selectedMenuKey: e
-    })
-
-    onProductClick = (id) => {
-        this.props.history.push(`${PATH.PRODUCT}/${id}`);
+    componentDidMount() {
+        let cache = getStorage();
+        if (cache.productBanner && cache.productBanner.length !== 0) {
+            willUpdateState(
+                () => this.setState({
+                    slidesData: this.createSlidesData(cache.productBanner)
+                })
+                , this.unmounted
+            )
+        }
+        this.getBanner().then(
+            banners => {
+                cache = getStorage();
+                const slidesData = this.createSlidesData(banners);
+                willUpdateState(
+                    () => {
+                        if (slidesData !== this.state.slidesData) {
+                            this.setState({ slidesData })
+                        }
+                    }
+                    , this.unmounted
+                )
+                setStorage({
+                    ...cache,
+                    productBanner: banners
+                })
+            }
+        );
     }
 
-    onChangeSearch = (searchValue) => { this.setState({ searchValue }) }
+    componentWillUnmount() {
+        this.unmounted = true;
+    }
+
+    createSlidesData(banners) {
+        return banners.map(banner => <Image
+            key={banner.BannerID}
+            className={window.classnames(cls.bannerImage)}
+            src={banner.BannerImage}
+            onClick={() => window.open(banner.BannerLink, '_blank')}
+        />
+        )
+    }
+
+    getBanner() {
+        return window.get(GET_HOME_BANNER).then(
+            res => {
+                const banners = addUrlToImages(
+                    JSON.parse(res.data),
+                    `${res[ADMIN_URL_KEY]}${res[BANNER_PATH_KEY]}`,
+                    'BannerImage'
+                );
+                return banners;
+            }
+        ).catch(
+            err => {
+                console.log('getBanner', err);
+            }
+        )
+    }
 
     render() {
-        const { selectedMenuKey } = this.state;
         return (
             <PageLayout
                 slidesData={this.state.slidesData}
                 bodyClassName={window.classnames(cls.productBody)}
             >
-                <Row className={window.classnames(cls.bodyContainer)}>
-                    <Col className={window.classnames(cls.filter)}>
-                        {/* <Input
-                            className={window.classnames(cls.searchLaptop)}
-                            search
-                            value={this.state.searchValue}
-                            onChange={this.onChangeSearch} /> */}
-                        <Menu
-                            menu={PRODUCT}
-                            containerClassName={window.classnames(cls.menuContainer)}
-                            className={window.classnames(cls.menu)}
-                            mode={'inline'}
-                            selectedKeys={[selectedMenuKey]}
-                            onClick={this.hanldeMenuClick.bind(this)}
-                        />
-                    </Col>
-                    <Col className={window.classnames(cls.product)}>
-                        <Heading type={2} className={window.classnames(cls.productHeading)}>
-                            {`Đồ gỗ > Ghế > Ghế đẩu`}
-                        </Heading>
-                        <Row className={window.classnames(cls.cardContainer)}>
-                            {products.map((product, index) => <Card
-                                className={window.classnames(cls.card)}
-                                contentClassName={window.classnames(cls.cardContent)}
-                                title={product.title}
-                                src={product.src}
-                                subTitle={product.subTitle}
-                                key={index}
-                                id={product.id}
-                                onClick={this.onProductClick}
-                            />)}
-                        </Row>
-                    </Col>
-                </Row>
+                <ProductComp />
             </PageLayout>
         );
     }

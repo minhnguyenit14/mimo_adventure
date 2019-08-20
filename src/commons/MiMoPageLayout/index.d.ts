@@ -8,7 +8,7 @@ export declare type MiMoPageLayoutProps = {
     bodyClassName?: String;
 } & HeaderProps & BodyProps & FooterProps;
 
-declare class Header extends React.Component<MiMoPageLayoutProps, any> {
+declare class MiMoPageLayout extends React.Component<MiMoPageLayoutProps, any> {
     static defaultProps: {
         bodyClassName: String;
     }
@@ -18,4 +18,4 @@ declare class Header extends React.Component<MiMoPageLayoutProps, any> {
     render(): JSX.Element;
 }
 
-export default Header;
+export default MiMoPageLayout;

@@ -9,7 +9,9 @@
     flex-direction: row;
     -webkit-flex-direction: row;
     align-items: center;
-
+    word-break: break-all;
+    white-space: pre-line;
+    
     @media screen and (max-width: $smallDevice) {
         flex-direction: column;
         -webkit-flex-direction: column;

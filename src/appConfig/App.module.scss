@@ -11,7 +11,10 @@ body {
     scroll-behavior: smooth;
     font-size: $fontSizeStandard !important;
 
-    @media screen and (max-height: $smallDevice){
+    @media screen and (max-width: $smallDevice){
         font-size: $fontSizeSmall !important;
+    }
+    @media screen and (max-width: $superSmallDevice) {
+        h1,h2,h3,span,div,p{font-size: .9rem!important;}
     }
 }

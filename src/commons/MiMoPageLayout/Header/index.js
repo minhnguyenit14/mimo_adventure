@@ -2,25 +2,41 @@ import React, { PureComponent, Fragment } from 'react';
 import { Container, Menu, Row, Image, Button, Input, Slider } from 'app-commons';
 import cls from './styles.module.scss';
 import { withRouter } from 'react-router-dom';
-import { isMobileOnly, isTablet } from 'react-device-detect';
+import { isMobileOnly } from 'react-device-detect';
 import styles from 'app-config/app_vars.scss';
 import { FaAlignJustify, FaSearch } from 'react-icons/fa';
-import { PATH } from 'app-constants';
+import { MENU, PATH, GET_ALL_PRODUCT_CATEGORIES, MENU_PRODUCT_ID, MENU_HOME_ID, MENU_ABOUT_US_ID, MENU_CONTACT_ID, MENU_BLOG_ID } from 'app-constants';
+import { getStorage, setStorage, formatMenuFromApi, willUpdateState, getSelectedKey } from 'app-helpers';
+import { connect } from 'react-redux';
+import { setSelectedMenuKeys, setSmartPath } from 'app-redux/actions/menu';
+import qs from 'querystring';
 
 const smallDevice = parseInt(styles.smallDevice);
+const connector = connect(
+    state => ({
+        menu: state.menu
+    }),
+    dispatch => ({
+        setSelectedMenuKeys: (selectedMenuKeys) =>
+            dispatch(setSelectedMenuKeys(selectedMenuKeys)),
+        setSmartPath: (smartPath) =>
+            dispatch(setSmartPath(smartPath)),
+    })
+)
 
 class Header extends PureComponent {
 
-    toggleMenuBtn = null;
-    searchBarMobile = null;
-    toggleSearchBarBtn = null
     state = {
         inlineCollapsed: this.initIsCollapsable,
         isMenuCollapsable: this.initIsCollapsable,
-        selectedMenuKey: "0",
         showSearchBar: false,
-        searchValue: ''
+        searchValue: '',
+        menu: []
     };
+    toggleMenuBtn = null;
+    searchBarMobile = null;
+    toggleSearchBarBtn = null;
+    unmounted = false;
 
     get initIsCollapsable() {
         return isMobileOnly || window.innerWidth < smallDevice;
@@ -29,11 +45,95 @@ class Header extends PureComponent {
     componentDidMount() {
         window.addEventListener('resize', this.handleResize);
         document.addEventListener('mousedown', this.checkClickOutSide);
+        console.log('header')
+        let cache = getStorage();
+        const menu = MENU;
+
+        if (cache.productCategories && cache.productCategories.length !== 0) {
+            this.updateProductCategoriesOfMenu(menu, cache.productCategories);
+            this.setState({ menu })
+        }
+        if (cache.smartPath && cache.smartPath !== 0) {
+            this.props.setSmartPath(cache.smartPath);
+            this.determineSelectedMenuKeys(menu);
+        }
+
+        this.getProductCategories().then(
+            productCategories => {
+                cache = getStorage();
+                const {
+                    formattedMenu: formattedProductCategories,
+                    smartPath
+                } = formatMenuFromApi([...productCategories]);
+                this.updateProductCategoriesOfMenu(menu, formattedProductCategories);
+                willUpdateState(
+                    () => {
+                        if (menu !== this.state.menu) {
+                            this.setState({ menu });
+                            this.props.setSmartPath(smartPath);
+                            this.determineSelectedMenuKeys(menu);
+                        }
+                    }
+                    , this.unmounted
+                )
+                setStorage({
+                    ...cache,
+                    productCategories: formattedProductCategories,
+                    smartPath
+                })
+            }
+        );
     }
 
     componentWillUnmount() {
         window.removeEventListener('resize', this.handleResize);
         document.removeEventListener('mousedown', this.checkClickOutSide);
+
+        this.unmounted = true;
+    }
+
+    determineSelectedMenuKeys(menu) {
+        let { menuPath } = this.props.match.params;
+        let selectedKey = "";
+
+        if (menuPath) {
+            menuPath = Object.keys(qs.parse(menuPath))[0];
+            selectedKey = getSelectedKey(menu, menuPath);
+        }
+
+        if (!selectedKey && this.props.menu.selectedMenuKeys.length === 0) {
+            let { pathname } = this.props.location;
+            menu.forEach(item => {
+                if (pathname.includes(item.seoTitle)) {
+                    selectedKey = item.key
+                }
+            })
+        }
+
+        if (selectedKey) {
+            this.props.setSelectedMenuKeys([selectedKey]);
+        }
+    }
+
+    updateProductCategoriesOfMenu = (menu, productCategories) => {
+        menu.forEach(item => {
+            if (item.key === MENU_PRODUCT_ID) {
+                item.children = productCategories;
+            }
+        })
+    }
+
+    getProductCategories() {
+        return window.get(GET_ALL_PRODUCT_CATEGORIES).then(
+            res => {
+                return JSON.parse(res.data);
+            }
+        ).catch(
+            err => {
+                alert('Có lỗi xảy ra! [PRODUCT_CATEGORY]')
+                console.log('getProductCategories', err)
+            }
+        )
     }
 
     checkClickOutSide = (e) => {
@@ -59,22 +159,25 @@ class Header extends PureComponent {
     }
 
     hanldeMenuClick = (e) => {
-        this.setState({ selectedMenuKey: e });
+        this.props.setSelectedMenuKeys([e]);
         switch (e) {
-            case "-1":
+            case MENU_HOME_ID:
                 this.props.history.push(PATH.HOME);
                 break;
-            case "-2":
-                this.props.history.push(PATH.PRODUCT);
+            case MENU_PRODUCT_ID:
+                this.props.history.push(PATH.LIST_PRODUCTS);
                 break;
-            case "-3":
+            case MENU_BLOG_ID:
+                this.props.history.push(PATH.BLOG);
+                break;
+            case MENU_ABOUT_US_ID:
                 this.props.history.push(PATH.ABOUT_US);
                 break;
-            case "-4":
+            case MENU_CONTACT_ID:
                 this.props.history.push(PATH.CONTACT);
                 break;
             default:
-                this.props.history.push(PATH.PRODUCT);
+                this.props.history.push(PATH.LIST_PRODUCTS);
                 break;
         }
     }
@@ -107,22 +210,31 @@ class Header extends PureComponent {
     }
 
     render() {
-        const { children, slidesData, ...headerProps } = this.props;
         const {
-            selectedMenuKey,
+            children,
+            slidesData,
+            menu: reduxMenu,
+            ...headerProps
+        } = this.props;
+        const {
+            selectedMenuKeys
+        } = reduxMenu;
+        const {
             isMenuCollapsable,
-            inlineCollapsed
+            inlineCollapsed,
+            menu
         } = this.state;
         const collapseMenuButton = this.renderCollapseButton();
-        const menu = <Menu
+        const menuJSX = <Menu
             onCollapseMenu={this.collapseMenu.bind(this)}
             refToggleButton={this.toggleMenuBtn}
             containerClassName={window.classnames(cls.menuContainer)}
             className={window.classnames(cls.menu)}
-            selectedKeys={[selectedMenuKey]}
+            selectedKeys={selectedMenuKeys}
             onClick={this.hanldeMenuClick.bind(this)}
             isMenuCollapsable={isMenuCollapsable}
             inlineCollapsed={inlineCollapsed}
+            menu={menu}
         />;
         const image = <Image
             containerClassName={window.classnames(cls.imgContainer)}
@@ -169,11 +281,11 @@ class Header extends PureComponent {
                     }
                     <Row className={window.classnames(cls.headerContainer)} {...headerProps}>
                         {!isMenuCollapsable && image}
-                        {!isMenuCollapsable ? menu : collapseMenuButton}
+                        {!isMenuCollapsable ? menuJSX : collapseMenuButton}
                         {isMenuCollapsable && image}
                         {searchBar}
                     </Row>
-                    {isMenuCollapsable && menu}
+                    {isMenuCollapsable && menuJSX}
                 </Container >
                 {slidesData.length !== 0 && <div className={window.classnames(cls.slider)}>
                     <Slider data={slidesData} />
@@ -183,4 +295,4 @@ class Header extends PureComponent {
     }
 }
 
-export default withRouter(Header);
+export default withRouter(connector(Header));

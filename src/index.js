@@ -9,12 +9,11 @@ import configureStore from 'app-config/configureStore';
 // libraries
 import 'app-config/global';
 import { Provider } from 'react-redux';
-import Loadable from 'react-loadable';
 import { BrowserRouter } from 'react-router-dom';
 import Routers from 'app-config/routers';
 
 // components
-import {PageContainer} from 'app-commons';
+import { PageContainer } from 'app-commons';
 
 // styles
 import "antd/dist/antd.css";

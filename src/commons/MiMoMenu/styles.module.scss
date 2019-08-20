@@ -172,15 +172,14 @@ li[role="menuitem"] {
     -webkit-transform: translateX(-100%);
 }
 
-.menuOnMobile {
-    [class*="ant-menu-submenu-selected"] {
-        >div {
 
-            h1,
-            h2,
-            h3 {
-                color: $textMainActive !important;
-            }
+[class*="ant-menu-submenu-selected"] {
+    >div {
+
+        h1,
+        h2,
+        h3 {
+            color: $textMainActive !important;
         }
     }
 }

@@ -2,6 +2,7 @@
 
 .cardContainer {
     background-color: #fff;
+    padding-bottom: $paddingContainer;
 
     &:hover {
         cursor: pointer;
@@ -20,13 +21,29 @@
     margin-top: $marginContainer;
     padding-left: $paddingContainer;
     padding-right: $paddingContainer;
+    text-align: center;
 }
 
 .caption {
     margin-bottom: $marginContainer/3;
+    font-size: 1em !important;
+    color: $textMain !important;
+    font-weight: $fontBold !important;
 
     @media screen and (max-width: $smallDevice) {
         margin-bottom: $marginContainer/5;
+        width: 100%;
+    }
+}
+
+.heading {
+    @media screen and (max-width: $smallDevice) {
+        width: 100%;
+    }
+}
+
+.paragragh {
+    @media screen and (max-width: $smallDevice) {
         width: 100%;
     }
 }

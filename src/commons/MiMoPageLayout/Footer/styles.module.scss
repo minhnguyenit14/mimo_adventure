@@ -2,8 +2,8 @@
 
 .footerContainer {
     background-color: #f3f3f3;
-    padding-top: $paddingContainer * 4;
-    padding-bottom: $paddingContainer * 4;
+    padding-top: $paddingContainer * 3;
+    padding-bottom: $paddingContainer * 3;
     padding-left: $paddingContainer;
     padding-right: $paddingContainer;
     display: flex;
@@ -13,6 +13,7 @@
     flex: 1;
     -webkit-flex: 1;
     max-height: min-content;
+    align-items: center;
 
     @media screen and (max-width: $smallDevice) {
         flex-direction: column;
@@ -29,11 +30,11 @@
     flex: .1;
     -webkit-flex: .1;
     justify-content: space-between;
-    padding-left: $paddingContainer;
 
     @media screen and (max-width: $smallDevice) {
         flex-direction: row;
         -webkit-flex-direction: row;
+        width: 100%;
         @include flexHorizontalCenter;
     }
 }
@@ -51,26 +52,33 @@
 
 .menuItem {
     font-weight: $fontLightBold !important;
-    font-size: .9rem !important;
 
     @media screen and (max-width: $smallDevice) {
         margin: $marginContainer*2 auto !important;
-        text-align: center
+        text-align: center;
+    }
+
+    @media screen and (max-width: $superSmallDevice) {
+        font-size: .9em!important;
     }
 }
 
 .addressRow {
     justify-content: space-between;
 
-    >svg {
-        margin-right: 5px;
-    }
-
     @media screen and (max-width: $smallDevice) {
         flex-direction: row;
         -webkit-flex-direction: row;
         margin-bottom: $marginContainer/2;
     }
+}
+
+.infoIcon {
+    margin-right: $marginContainer;
+}
+
+.infoParagraph {
+    margin: 0 auto !important;
 }
 
 .companyInfoContainer {
@@ -95,7 +103,6 @@
     display: -webkit-flex;
     justify-content: flex-end;
     align-items: center;
-    padding-right: $paddingContainer;
 
     @media screen and (max-width: $smallDevice) {
         justify-content: center;

@@ -17,6 +17,7 @@ $fontExtraBold: 800;
 $fontBlack: 900;
 
 //layout
+$superSmallDevice: 468px;
 $underMobile: 767px;
 $mobile: 768px;
 $smallDevice: 992px;
@@ -25,6 +26,7 @@ $fullHDDevice: 1980px;
 $maxWidthApp: $fullHDDevice;
 
 :export {
+    superSmallDevice: $superSmallDevice;
     mobile: $mobile;
     smallDevice: $smallDevice;
     largeDevice: $largeDevice;
@@ -48,7 +50,7 @@ $borderColor: #D9D9D9;
 $borderColorDarker: #D8DCE6;
 $borderRadius: 4px;
 // text
-$textHeading: rgba(0, 0, 0, .85);
+$textHeading: rgba(20, 20, 20, .85);
 $textMain: rgba(0, 0, 0, .65);
 $textMainHover: rgba(0, 0, 0, .55);
 $textMainActive: black;

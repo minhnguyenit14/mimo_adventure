@@ -11,8 +11,8 @@
             "app-constants": [
                 "./constants"
             ],
-            "app-helpers/*": [
-                "./helpers/*"
+            "app-helpers": [
+                "./helpers"
             ],
             "app-config/*": [
                 "./appConfig/*"
