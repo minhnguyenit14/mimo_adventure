@@ -1,0 +1,8 @@
+{
+    "BACKEND_URL": "https://anclient.anguyen.com.vn",
+    "ADMIN_URL": "https://anadmin.anguyen.com.vn",
+    "BANNER_PATH": "/UserData/Banner",
+    "PRODUCT_THUMBNAIL_PATH": "/UserData/ProductThumb",
+    "PRODUCT_PATH": "/UserData/Product",
+    "BLOG_THUMBNAIL_PATH": "/UserData/BlogThumb"
+}

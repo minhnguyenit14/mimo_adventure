@@ -1,0 +1,10 @@
+@import '~appConfig/app_vars';
+
+.body {
+    margin-top: $headerHeight;
+
+    @media screen and (max-width: $smallDevice) {
+        margin-top: $headerMobileHeight;
+
+    }
+}
