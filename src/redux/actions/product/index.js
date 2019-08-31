@@ -1,18 +1,16 @@
 import types from "./types";
 import { STATUS } from 'app-constants';
 
-export const queryExecutor = (url, whereClause, pageNumber, rowsPerPage, setStatus, callbackSuccess) => {
+export const queryExecutor = (url, whereClause, page, rows, setStatus, callbackSuccess, method) => {
     return dispatch => {
         let body = {
-            entityName: 'Product',
             where: whereClause,
-            order: 'LastModified desc',
-            pageNumber,
-            rowsPerPage
+            page,
+            rows
         }
 
         dispatch(setStatus(STATUS.loading));
-        window.get(url, body).then(
+        window[method](url, body).then(
             res => {
                 if (res.data.Error) {
                     dispatch(setStatus(STATUS.error))
@@ -29,16 +27,21 @@ export const queryExecutor = (url, whereClause, pageNumber, rowsPerPage, setStat
     }
 }
 
-export const searchProduct = (url, whereClause, indexPage, rowsPerPage, callbackSuccess) => {
+export const searchProducts = (url, whereClause, indexPage, rows, callbackSuccess, method = "post") => {
     return dispatch => {
-        dispatch(queryExecutor(url, whereClause, indexPage, rowsPerPage, setSearchStatus, callbackSuccess));
+        dispatch(queryExecutor(url, whereClause, indexPage, rows, setSearchStatus, callbackSuccess, method));
     }
-
 }
 
-export const showMoreProduct = (url, whereClause, indexPage, rowsPerPage, callbackSuccess) => {
+export const getProducts = (url, whereClause, indexPage, rows, callbackSuccess, method = "post") => {
     return dispatch => {
-        dispatch(queryExecutor(url, whereClause, indexPage, rowsPerPage, setShowMoreStatus, callbackSuccess));
+        dispatch(queryExecutor(url, whereClause, indexPage, rows, setSearchStatus, callbackSuccess, method));
+    }
+}
+
+export const showMoreProduct = (url, whereClause, indexPage, rows, callbackSuccess, method = "get") => {
+    return dispatch => {
+        dispatch(queryExecutor(url, whereClause, indexPage, rows, setShowMoreStatus, callbackSuccess, method));
     }
 }
 

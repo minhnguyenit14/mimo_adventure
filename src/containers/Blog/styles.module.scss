@@ -1,1 +1,12 @@
 @import '~appConfig/app_vars';
+
+.bodyRoot {
+    @include flexCenter;
+    margin-top: $headerHeight;
+
+    @media screen and (max-width: $smallDevice) {
+        margin-top: $headerMobileHeight;
+
+    }
+    background-color: $bg;
+}

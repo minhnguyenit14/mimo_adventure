@@ -14,7 +14,8 @@ import {
     AboutUs,
     Contact,
     Blog,
-    NotFound
+    NotFound,
+    BlogDetail
 } from 'app-containers';
 
 // constants
@@ -27,6 +28,7 @@ const Routers = () => {
             <Route path={[`${PATH.LIST_PRODUCTS}/:menuPath`, PATH.LIST_PRODUCTS]} component={Product} />
             <Route exact path={`${PATH.PRODUCT}/:productID`} component={ProductDetail} />
             <Route exact path={PATH.BLOG} component={Blog} />
+            <Route exact path={`${PATH.BLOG}/:blogID`} component={BlogDetail} />
             <Route exact path={PATH.ABOUT_US} component={AboutUs} />
             <Route exact path={PATH.CONTACT} component={Contact} />
             <Route component={NotFound} />

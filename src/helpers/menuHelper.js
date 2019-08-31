@@ -10,11 +10,13 @@ export const formatMenuFromApi = (menu) => {
             temp = {
                 key: String(item.ProductCategoryID),
                 title: item.ProductCategoryName,
+                seoTitle: item.ProductCategorySEOTitle,
                 children: []
             };
             smartTemp = [];
             smartTemp.push({
                 key: String(item.ProductCategoryID),
+                seoTitle: item.ProductCategorySEOTitle,
                 title: item.ProductCategoryName
             });
             if (item.NumOfChild > 0) {
@@ -35,11 +37,13 @@ const recursiveMenu = (menu, temp, level) => {
                 {
                     key: String(item.ProductCategoryID),
                     title: item.ProductCategoryName,
+                    seoTitle: item.ProductCategorySEOTitle,
                     children: []
                 }
             )
             smartTemp.push({
                 key: String(item.ProductCategoryID),
+                seoTitle: item.ProductCategorySEOTitle,
                 title: item.ProductCategoryName
             })
 
@@ -57,8 +61,8 @@ export const getSelectedKey = (menu, selectedMenuName) => {
     selectedKey = "";
     menu.forEach(item => {
         if (selectedKey) return;
-        
-        if (selectedMenuName.toLowerCase() === item.title.toLowerCase()) {
+
+        if (selectedMenuName.toLowerCase() === item.seoTitle.toLowerCase()) {
             selectedKey = item.key;
             return;
         }
@@ -73,7 +77,7 @@ export const getSelectedKeyRecursive = (menu, selectedMenuName) => {
     menu.forEach(item => {
         if (selectedKey) return;
 
-        if (selectedMenuName.toLowerCase() === item.title.toLowerCase()) {
+        if (selectedMenuName.toLowerCase() === item.seoTitle.toLowerCase()) {
             selectedKey = item.key;
             return;
         }

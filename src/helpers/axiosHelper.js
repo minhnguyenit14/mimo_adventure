@@ -20,7 +20,14 @@ export const getConfig = () => {
 export const post = (url, body) => {
     return getConfig().then(
         res => {
-            let { BACKEND_URL } = res.data;
+            let {
+                BACKEND_URL,
+                ADMIN_URL,
+                BANNER_PATH,
+                PRODUCT_THUMBNAIL_PATH,
+                PRODUCT_PATH,
+                BLOG_THUMBNAIL_PATH
+            } = res.data;
             url = url.replace(BACKEND_URL_AKA, BACKEND_URL);
             console.log('url', String(url));
             console.log('body', body);
@@ -33,6 +40,11 @@ export const post = (url, body) => {
                 data: JSON.stringify(body)
             }).then(
                 res => {
+                    res[ADMIN_URL_KEY] = ADMIN_URL;
+                    res[BANNER_PATH_KEY] = BANNER_PATH;
+                    res[PRODUCT_THUMBNAIL_PATH_KEY] = PRODUCT_THUMBNAIL_PATH;
+                    res[PRODUCT_PATH_KEY] = PRODUCT_PATH;
+                    res[BLOG_THUMBNAIL_PATH_KEY] = BLOG_THUMBNAIL_PATH;
                     return handleRespond(res);
                 }
             ).catch(err => {

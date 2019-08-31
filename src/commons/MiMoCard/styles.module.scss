@@ -25,13 +25,13 @@
 }
 
 .caption {
-    margin-bottom: $marginContainer/3;
+    margin-top: $marginContainer/3;
     font-size: 1em !important;
     color: $textMain !important;
     font-weight: $fontBold !important;
 
     @media screen and (max-width: $smallDevice) {
-        margin-bottom: $marginContainer/5;
+        margin-top: $marginContainer/5;
         width: 100%;
     }
 }

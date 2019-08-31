@@ -48,7 +48,10 @@ class MiMoMenu extends Component {
     }
 
     hanldeMenuClick = (e, willCollapse = true, isArrow = false) => {
-        isArrow || this.props.onClick(e);
+        if (!isArrow) {
+            this.props.onClick(e.key);
+            this.props.onMenuClick(e);
+        };
         this.props.isMenuCollapsable && willCollapse && this.props.onCollapseMenu()
     };
 
@@ -56,14 +59,14 @@ class MiMoMenu extends Component {
         const heading = <Heading
             type={level === 0 ? 2 : 3}
             className={window.classnames(cls.menuItem)}
-            onClick={() => this.hanldeMenuClick(menuItem.key, true, false)}
+            onClick={() => this.hanldeMenuClick(menuItem, true, false)}
         >
             {menuItem.title}
         </Heading>;
         const title = this.props.isMenuCollapsable || this.props.mode === 'inline' ?
             <Row
                 className={window.classnames(cls.menuItemRow)}
-                onClick={() => this.hanldeMenuClick(menuItem.key, false, true)}
+                onClick={() => this.hanldeMenuClick(menuItem, false, true)}
             >
                 {heading}
             </Row>
@@ -83,7 +86,7 @@ class MiMoMenu extends Component {
                     } else {
                         return <Item
                             key={menuItemChildren.key}
-                            onClick={() => this.hanldeMenuClick(menuItemChildren.key)}
+                            onClick={() => this.hanldeMenuClick(menuItemChildren)}
                         >
                             <Heading
                                 type={3}
@@ -109,7 +112,7 @@ class MiMoMenu extends Component {
                 menu.push(
                     <Item
                         key={menuItem.key}
-                        onClick={() => this.hanldeMenuClick(menuItem.key)}
+                        onClick={() => this.hanldeMenuClick(menuItem)}
                     >
                         <Heading
                             type={2}
@@ -137,6 +140,7 @@ class MiMoMenu extends Component {
             inlineCollapsed,
             containerClassName,
             onClick,
+            onMenuClick,
             onCollapseMenu,
             refToggleButton,
             mode,
@@ -172,6 +176,8 @@ class MiMoMenu extends Component {
 
 MiMoMenu.defaultProps = {
     selectedKeys: [],
+    onMenuClick: () => { },
+    onClick: () => { },
     refToggleButton: null,
     menu: MENU
 }

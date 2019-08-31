@@ -12,7 +12,7 @@ import {
 } from 'app-helpers';
 import { ADMIN_URL_KEY, PRODUCT_THUMBNAIL_PATH_KEY } from 'app-config/network';
 import { connect } from "react-redux";
-import { searchProduct, showMoreProduct, setProducts } from 'app-redux/actions/product';
+import { getProducts, showMoreProduct, setProducts } from 'app-redux/actions/product';
 import { setSelectedMenuKeys } from 'app-redux/actions/menu';
 import { withRouter } from 'react-router-dom';
 
@@ -31,8 +31,8 @@ const connector = connect(
             setProducts: (products) => {
                 dispatch(setProducts(products))
             },
-            searchProduct: (url, whereClause, indexPage, rowsPerPage, callbackSuccess) => {
-                dispatch(searchProduct(url, whereClause, indexPage, rowsPerPage, callbackSuccess))
+            getProducts: (url, whereClause, indexPage, rowsPerPage, callbackSuccess) => {
+                dispatch(getProducts(url, whereClause, indexPage, rowsPerPage, callbackSuccess))
             },
             showMoreProduct: (url, whereClause, indexPage, rowsPerPage, callbackSuccess) => {
                 dispatch(showMoreProduct(url, whereClause, indexPage, rowsPerPage, callbackSuccess))
@@ -53,10 +53,17 @@ class Product extends Component {
     };
     getProductCategoriesInterval = null;
     unmounted = false;
+    gotProducts = false;
 
     shouldComponentUpdate(nextProps, nextState) {
-        if (nextProps.menuRedux.selectedMenuKeys !== this.props.menuRedux.selectedMenuKeys) {
+        console.log(nextProps.menuRedux.selectedMenuKeys, this.props.menuRedux.selectedMenuKeys)
+        if (nextProps.menuRedux.selectedMenuKeys !== this.props.menuRedux.selectedMenuKeys
+            || !this.gotProducts) {
             this.getDefaultOpenMenuKeys(nextProps.menuRedux);
+
+            const productCategoryKey = Number(nextProps.menuRedux.selectedMenuKeys[0]);
+            this.getProducts(productCategoryKey || "");
+            this.gotProducts = true;
             return false;
         }
         return true;
@@ -64,17 +71,8 @@ class Product extends Component {
 
     componentDidMount() {
         this.getProductCategoriesInterval = setInterval(() => this.getProductCategories(), 200);
-        this.getAllProducts();
-        // let body = {
-        //     where: `""`,
-        //     pageNumber: 0,
-        //     rowsPerPage: 9
-        // }
-
-        // window.get(GET_PAGING_ARTICLE, body).then(
-        //     res => console.log(JSON.parse(JSON.parse(res.data).data)),
-        //     err => console.log(err)
-        // )
+        this.getProducts();
+        console.log('didmount');
     }
 
     componentWillUnmount() {
@@ -106,8 +104,9 @@ class Product extends Component {
         }
     }
 
-    getAllProducts() {
-        this.props.searchProduct(GET_PAGING_PRODUCT, `""`, 0, ROWS_PER_PAGE,
+    getProducts(whereClause = "") {
+        console.log()
+        this.props.getProducts(GET_PAGING_PRODUCT, whereClause, 0, ROWS_PER_PAGE,
             (res) => {
                 let products = addUrlToImages(
                     JSON.parse(JSON.parse(res.data).data),
@@ -126,21 +125,9 @@ class Product extends Component {
         )
     }
 
-    createWhereClause() {
-        var pr = [];
-        pr.push({
-            ConditionOperation: QUERY.GroupClauseOperation.Or,
-            GroupOperation: QUERY.GroupClauseOperation.And,
-            Conditions: [
-                createWhereClauseCondition("ProductName", '', QUERY.WhereClauseOperation.Like, 'pc'),
-            ],
-        });
-        var json = pr.length > 0 ? prepareWhereClauseGroup(pr) : '';
-        return json;
-    }
-
-    hanldeMenuClick(e) {
-        this.props.setSelectedMenuKeys([e]);
+    hanldeMenuClick(item) {
+        this.props.setSelectedMenuKeys([item.key]);
+        this.props.history.push(`${PATH.LIST_PRODUCTS}/${item.seoTitle}`);
     }
 
     onProductClick = (id) => {
@@ -158,7 +145,9 @@ class Product extends Component {
                     paths.forEach(path => {
                         selectedMenuKeys.forEach(key => {
                             if (path.key === key) {
-                                openKeys = paths.map(path => path.key);
+                                openKeys = paths.map(path => {
+                                    return path.key
+                                });
                                 return;
                             }
                         })
@@ -210,7 +199,7 @@ class Product extends Component {
                             className={window.classnames(cls.menu)}
                             mode={'inline'}
                             selectedKeys={selectedMenuKeys}
-                            onClick={this.hanldeMenuClick.bind(this)}
+                            onMenuClick={this.hanldeMenuClick.bind(this)}
                             openKeys={openKeys}
                         />
                     </Col>

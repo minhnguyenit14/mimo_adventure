@@ -1,0 +1,81 @@
+@import '~appConfig/app_vars';
+
+@mixin keepRowing() {
+    @media screen and (max-width: $smallDevice) {
+        flex-direction: row;
+    }
+}
+
+.blogContainer {
+    width: 80vw;
+    max-width: 1366 * .7px;
+    padding-bottom: $paddingContainer*1.5;
+    margin-bottom: $paddingContainer*1.5;
+    border-bottom: 1px solid $borderColor;
+
+    @media screen and (max-width: $smallDevice) {
+        width: 100%;
+        padding-left: $paddingContainer;
+        padding-right: $paddingContainer;
+    }
+}
+
+.blogRow {
+    @include keepRowing();
+}
+
+.imageBlock {
+    max-width: 25%;
+    height: auto;
+
+    @media screen and (max-width: $smallDevice) {
+        max-width: 30vw;
+    }
+}
+
+.infoBlock {
+    padding-left: $paddingContainer
+}
+
+.title {
+    @media screen and (min-width: $smallDevice) {
+        margin-bottom: 0;
+    }
+}
+
+.captionBlock {
+    margin-bottom: 0.8em;
+    @include keepRowing();
+
+    @media screen and (max-width: $smallDevice) {
+        align-items: flex-start;
+    }
+}
+
+.captionItem {
+    flex: none;
+    @include keepRowing();
+
+    @media screen and (max-width: $smallDevice) {
+        font-size: .9em !important;
+
+        >span {
+            font-size: inherit !important;
+        }
+    }
+}
+
+.captionIcon {
+    margin-right: $marginContainer/2;
+
+    >svg {
+        width: .8em;
+        height: .8em;
+        fill: $textSecondary;
+    }
+}
+
+.point {
+    width: $paddingContainer*1.5;
+    display: inline-block;
+}

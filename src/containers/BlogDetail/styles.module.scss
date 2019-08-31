@@ -1,0 +1,142 @@
+@import '~appConfig/app_vars';
+
+@mixin keepRowing() {
+    @media screen and (max-width: $smallDevice) {
+        flex-direction: row;
+    }
+}
+
+.bodyRoot {
+    @include flexCenter;
+    margin-top: $headerHeight;
+
+    @media screen and (max-width: $smallDevice) {
+        margin-top: $headerMobileHeight;
+
+    }
+
+    background-color: $bg;
+}
+
+.blogDetailContainer {
+    max-width: 1366*.7px;
+    border: 1px solid $borderColor;
+    padding: $paddingContainer;
+
+    @media screen and (max-width: $smallDevice) {
+        border: none;
+    }
+}
+
+.header {
+    border-bottom: 1px solid $borderColorDarker;
+    margin-bottom: $marginContainer;
+}
+
+.captionBlock {
+    @include keepRowing();
+    margin-bottom: 0.5em;
+
+    @media screen and (max-width: $smallDevice) {
+        align-items: flex-start;
+    }
+}
+
+.captionItem {
+    flex: none;
+    @include keepRowing();
+
+    @media screen and (max-width: $smallDevice) {
+        font-size: .9em !important;
+
+        >span {
+            font-size: inherit !important;
+        }
+    }
+}
+
+.captionIcon {
+    margin-right: $marginContainer/2;
+
+    >svg {
+        width: .8em;
+        height: .8em;
+        fill: $textSecondary;
+    }
+}
+
+.fbWrapper {
+    height: 20px;
+    margin-bottom: 0.8em;
+}
+
+.fbContainer {
+    &::before {
+        content: '';
+        background: url("http://kenh14cdn.com/web_images/sprite-k14.20.png") -227px -66px no-repeat;
+        width: 10px;
+        height: 16px;
+        position: absolute;
+        top: 1px;
+        left: 7px;
+        background-size: 457px;
+    }
+    &:hover{
+        cursor: pointer;
+    }
+
+    background: #4167b2;
+    padding-left: 20px;
+    height: 20px;
+    display: block;
+    line-height: 20px;
+    text-decoration: none;
+    color: #fff;
+    float: left;
+    margin-right: 6px;
+    border-radius: 2px;
+    font-size: 12px;
+    overflow: hidden;
+    position: relative;
+}
+
+.fbShareCount {
+    display: inline-block;
+    text-align: center;
+    font-size: 12px;
+    padding: 0 6px;
+}
+
+.point {
+    width: $paddingContainer*1.5;
+    display: inline-block;
+}
+
+.descriptionContainer {
+    border-left: 5px solid $borderColorDarker;
+    text-indent: $paddingContainer;
+    padding: $paddingContainer/2
+}
+
+.description {
+    font-size: larger !important;
+    font-style: italic;
+    font-weight: bold;
+    color: $textBase !important;
+}
+
+.content {
+    margin-top: $marginContainer;
+    margin-right: $marginContainer;
+
+    img {
+        max-width: 100%;
+        height: auto !important;
+    }
+
+    // @media screen and (max-width: $smallDevice) {
+    //     span {
+    //         font-size: 12px !important;
+    //     }
+    // }
+}

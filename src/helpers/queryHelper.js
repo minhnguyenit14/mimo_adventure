@@ -13,11 +13,3 @@ export const prepareWhereClauseGroup = (params) => {
     });
     return JSON.stringify(params);
 }
-
-export const createPostQueryUrl = (url, body) => {
-    Object.keys(body).forEach((key, index) => {
-        const operator = index === 0 ? '?' : '&';
-        url += `${operator}${key}=${body[key]}`;
-    })
-    return url.replace(/ /g, '_');
-}

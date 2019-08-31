@@ -1,4 +1,4 @@
-import React, { PureComponent, Fragment } from 'react';
+import React, { Component, Fragment } from 'react';
 import { Container, Menu, Row, Image, Button, Input, Slider } from 'app-commons';
 import cls from './styles.module.scss';
 import { withRouter } from 'react-router-dom';
@@ -24,7 +24,7 @@ const connector = connect(
     })
 )
 
-class Header extends PureComponent {
+class Header extends Component {
 
     state = {
         inlineCollapsed: this.initIsCollapsable,
@@ -45,7 +45,6 @@ class Header extends PureComponent {
     componentDidMount() {
         window.addEventListener('resize', this.handleResize);
         document.addEventListener('mousedown', this.checkClickOutSide);
-        console.log('header')
         let cache = getStorage();
         const menu = MENU;
 
@@ -55,7 +54,7 @@ class Header extends PureComponent {
         }
         if (cache.smartPath && cache.smartPath !== 0) {
             this.props.setSmartPath(cache.smartPath);
-            this.determineSelectedMenuKeys(menu);
+            this.determineSelectedMenuKeys(menu, this.props);
         }
 
         this.getProductCategories().then(
@@ -71,7 +70,7 @@ class Header extends PureComponent {
                         if (menu !== this.state.menu) {
                             this.setState({ menu });
                             this.props.setSmartPath(smartPath);
-                            this.determineSelectedMenuKeys(menu);
+                            this.determineSelectedMenuKeys(menu, this.props);
                         }
                     }
                     , this.unmounted
@@ -92,8 +91,23 @@ class Header extends PureComponent {
         this.unmounted = true;
     }
 
-    determineSelectedMenuKeys(menu) {
-        let { menuPath } = this.props.match.params;
+    shouldComponentUpdate(nextProps, nextState) {
+        if (this.state !== nextState) {
+            return true;
+        }
+        if (nextProps.match.params.menuPath !== this.props.match.params.menuPath) {
+            this.determineSelectedMenuKeys(nextState.menu, nextProps);
+            return false;
+        }
+        return false;
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        console.log('header')
+    }
+
+    determineSelectedMenuKeys(menu, props) {
+        let { menuPath } = props.match.params;
         let selectedKey = "";
 
         if (menuPath) {
@@ -101,8 +115,8 @@ class Header extends PureComponent {
             selectedKey = getSelectedKey(menu, menuPath);
         }
 
-        if (!selectedKey && this.props.menu.selectedMenuKeys.length === 0) {
-            let { pathname } = this.props.location;
+        if (!selectedKey) {
+            let { pathname } = props.location;
             menu.forEach(item => {
                 if (pathname.includes(item.seoTitle)) {
                     selectedKey = item.key
@@ -111,7 +125,7 @@ class Header extends PureComponent {
         }
 
         if (selectedKey) {
-            this.props.setSelectedMenuKeys([selectedKey]);
+            props.setSelectedMenuKeys([selectedKey]);
         }
     }
 
@@ -141,7 +155,8 @@ class Header extends PureComponent {
             !this.searchBarMobile.contains(e.target) &&
             this.toggleSearchBarBtn &&
             !this.toggleSearchBarBtn.contains(e.target) &&
-            this.state.isMenuCollapsable) {
+            this.state.isMenuCollapsable &&
+            this.state.showSearchBar) {
             this.setState({ showSearchBar: false })
         }
     }
@@ -158,9 +173,9 @@ class Header extends PureComponent {
         this.state.inlineCollapsed ? this.openMenu() : this.collapseMenu();
     }
 
-    hanldeMenuClick = (e) => {
-        this.props.setSelectedMenuKeys([e]);
-        switch (e) {
+    hanldeMenuClick = (item) => {
+        this.props.setSelectedMenuKeys([item.key]);
+        switch (item.key) {
             case MENU_HOME_ID:
                 this.props.history.push(PATH.HOME);
                 break;
@@ -177,7 +192,7 @@ class Header extends PureComponent {
                 this.props.history.push(PATH.CONTACT);
                 break;
             default:
-                this.props.history.push(PATH.LIST_PRODUCTS);
+                this.props.history.push(`${PATH.LIST_PRODUCTS}/${item.seoTitle}`);
                 break;
         }
     }
@@ -231,14 +246,14 @@ class Header extends PureComponent {
             containerClassName={window.classnames(cls.menuContainer)}
             className={window.classnames(cls.menu)}
             selectedKeys={selectedMenuKeys}
-            onClick={this.hanldeMenuClick.bind(this)}
+            onMenuClick={this.hanldeMenuClick.bind(this)}
             isMenuCollapsable={isMenuCollapsable}
             inlineCollapsed={inlineCollapsed}
             menu={menu}
         />;
         const image = <Image
             containerClassName={window.classnames(cls.imgContainer)}
-            onClick={() => this.props.history.replace(PATH.HOME)}
+            onClick={this.hanldeMenuClick.bind(this, { key: MENU_HOME_ID })}
             src={require('app-assets/images/logo/logo.png')}
         />;
 
