@@ -4,5 +4,6 @@
     "BANNER_PATH": "/UserData/Banner",
     "PRODUCT_THUMBNAIL_PATH": "/UserData/ProductThumb",
     "PRODUCT_PATH": "/UserData/Product",
-    "BLOG_THUMBNAIL_PATH": "/UserData/BlogThumb"
+    "BLOG_THUMBNAIL_PATH": "/UserData/BlogThumb",
+    "IMAGE_PATH": "/Images/images"
 }

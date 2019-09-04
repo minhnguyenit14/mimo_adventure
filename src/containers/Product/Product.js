@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 import { Row, Col, Menu, Heading, Card } from 'app-commons';
 import cls from './styles.module.scss';
-import { PATH, QUERY, GET_PAGING_PRODUCT } from 'app-constants';
+import { PATH, POST_PAGING_PRODUCT } from 'app-constants';
 import {
     getStorage,
     willUpdateState,
-    createWhereClauseCondition,
-    prepareWhereClauseGroup,
     addUrlToImages,
     toMoneyFormat,
 } from 'app-helpers';
@@ -15,6 +13,7 @@ import { connect } from "react-redux";
 import { getProducts, showMoreProduct, setProducts } from 'app-redux/actions/product';
 import { setSelectedMenuKeys } from 'app-redux/actions/menu';
 import { withRouter } from 'react-router-dom';
+import ListProduct from './ListProduct';
 
 const ROWS_PER_PAGE = 10;
 const ALL_PRODUCT_SHORCUT = 'Tất cả sản phẩm';
@@ -56,7 +55,6 @@ class Product extends Component {
     gotProducts = false;
 
     shouldComponentUpdate(nextProps, nextState) {
-        console.log(nextProps.menuRedux.selectedMenuKeys, this.props.menuRedux.selectedMenuKeys)
         if (nextProps.menuRedux.selectedMenuKeys !== this.props.menuRedux.selectedMenuKeys
             || !this.gotProducts) {
             this.getDefaultOpenMenuKeys(nextProps.menuRedux);
@@ -105,8 +103,7 @@ class Product extends Component {
     }
 
     getProducts(whereClause = "") {
-        console.log()
-        this.props.getProducts(GET_PAGING_PRODUCT, whereClause, 0, ROWS_PER_PAGE,
+        this.props.getProducts(POST_PAGING_PRODUCT, whereClause, 0, ROWS_PER_PAGE,
             (res) => {
                 let products = addUrlToImages(
                     JSON.parse(JSON.parse(res.data).data),
@@ -128,10 +125,6 @@ class Product extends Component {
     hanldeMenuClick(item) {
         this.props.setSelectedMenuKeys([item.key]);
         this.props.history.push(`${PATH.LIST_PRODUCTS}/${item.seoTitle}`);
-    }
-
-    onProductClick = (id) => {
-        this.props.history.push(`${PATH.PRODUCT}/${id}`);
     }
 
     onChangeSearch = (searchValue) => { this.setState({ searchValue }) }
@@ -188,6 +181,10 @@ class Product extends Component {
             selectedMenuKeys,
             smartPath
         } = this.props.menuRedux;
+        const {
+            searchStatus,
+            showMoreStatus
+        } = this.props.product;
         const shortcut = this.getShortCut(selectedMenuKeys, smartPath);
         return (
             <>
@@ -207,19 +204,11 @@ class Product extends Component {
                         <Heading type={2} className={window.classnames(cls.productHeading)}>
                             {shortcut}
                         </Heading>
-                        <Row className={window.classnames(cls.cardContainer)}>
-                            {products.map(product => <Card
-                                className={window.classnames(cls.card)}
-                                contentClassName={window.classnames(cls.cardContent)}
-                                title={product.ProductName}
-                                src={product.ProductThumbnail}
-                                subTitle={product.ProductCategoryName}
-                                description={`${product.ProductPrice} ₫`}
-                                key={product.ProductID}
-                                id={product.ProductID}
-                                onClick={this.onProductClick}
-                            />)}
-                        </Row>
+                        <ListProduct
+                            searchStatus={searchStatus}
+                            showMoreStatus={showMoreStatus}
+                            products={products}
+                        />
                     </Col>
                 </Row>
             </>

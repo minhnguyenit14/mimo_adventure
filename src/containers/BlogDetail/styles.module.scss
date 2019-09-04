@@ -20,12 +20,10 @@
 
 .blogDetailContainer {
     max-width: 1366*.7px;
+    width: 100%;
     border: 1px solid $borderColor;
     padding: $paddingContainer;
 
-    @media screen and (max-width: $smallDevice) {
-        border: none;
-    }
 }
 
 .header {
@@ -81,7 +79,8 @@
         left: 7px;
         background-size: 457px;
     }
-    &:hover{
+
+    &:hover {
         cursor: pointer;
     }
 
@@ -126,17 +125,29 @@
 }
 
 .content {
-    margin-top: $marginContainer;
-    margin-right: $marginContainer;
+    margin-top: $marginContainer * 2;
+    white-space: initial;
 
     img {
         max-width: 100%;
         height: auto !important;
+        margin: auto;
+        display: block;
     }
 
-    // @media screen and (max-width: $smallDevice) {
-    //     span {
-    //         font-size: 12px !important;
-    //     }
-    // }
+    span,
+    p,
+    div,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        color: inherit;
+    }
+
+    @media screen and (max-width: $smallDevice) {
+        border: none;
+    }
 }

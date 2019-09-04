@@ -6,7 +6,8 @@ import {
     BANNER_PATH_KEY,
     BLOG_THUMBNAIL_PATH_KEY,
     PRODUCT_PATH_KEY,
-    PRODUCT_THUMBNAIL_PATH_KEY
+    PRODUCT_THUMBNAIL_PATH_KEY,
+    IMAGE_PATH_KEY
 } from 'app-config/network';
 
 export const getConfig = () => {
@@ -26,7 +27,8 @@ export const post = (url, body) => {
                 BANNER_PATH,
                 PRODUCT_THUMBNAIL_PATH,
                 PRODUCT_PATH,
-                BLOG_THUMBNAIL_PATH
+                BLOG_THUMBNAIL_PATH,
+                IMAGE_PATH
             } = res.data;
             url = url.replace(BACKEND_URL_AKA, BACKEND_URL);
             console.log('url', String(url));
@@ -45,6 +47,7 @@ export const post = (url, body) => {
                     res[PRODUCT_THUMBNAIL_PATH_KEY] = PRODUCT_THUMBNAIL_PATH;
                     res[PRODUCT_PATH_KEY] = PRODUCT_PATH;
                     res[BLOG_THUMBNAIL_PATH_KEY] = BLOG_THUMBNAIL_PATH;
+                    res[IMAGE_PATH_KEY] = IMAGE_PATH;
                     return handleRespond(res);
                 }
             ).catch(err => {
@@ -63,7 +66,8 @@ export const get = (url, params = {}) => {
                 BANNER_PATH,
                 PRODUCT_THUMBNAIL_PATH,
                 PRODUCT_PATH,
-                BLOG_THUMBNAIL_PATH
+                BLOG_THUMBNAIL_PATH,
+                IMAGE_PATH
             } = res.data;
             url = url.replace(BACKEND_URL_AKA, BACKEND_URL);
             return axios(url, {
@@ -80,6 +84,7 @@ export const get = (url, params = {}) => {
                     res[PRODUCT_THUMBNAIL_PATH_KEY] = PRODUCT_THUMBNAIL_PATH;
                     res[PRODUCT_PATH_KEY] = PRODUCT_PATH;
                     res[BLOG_THUMBNAIL_PATH_KEY] = BLOG_THUMBNAIL_PATH;
+                    res[IMAGE_PATH_KEY] = IMAGE_PATH;
                     return handleRespond(res);
                 }
             ).catch(err => {

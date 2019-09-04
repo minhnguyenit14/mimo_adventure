@@ -2,51 +2,19 @@ import React, { Component } from 'react';
 import { PageLayout } from 'app-commons';
 import BlogComponent from './BlogComponent';
 import cls from './styles.module.scss';
-import { PATH, GET_PAGING_ARTICLE } from 'app-constants';
-import { getStorage, setStorage, willUpdateState, addUrlToImages } from 'app-helpers';
+import { PATH, GET_PAGING_ARTICLE, STATUS } from 'app-constants';
+import { willUpdateState, addUrlToImages } from 'app-helpers';
 import { BLOG_THUMBNAIL_PATH_KEY, ADMIN_URL_KEY } from 'app-config/network';
+import ListBlog from './ListBlog';
 
-const TEMP = [
-    {
-        ArticleAuthor: "Administrator",
-        ArticleContent: "<p>fdafasfa</p>↵",
-        ArticleID: 2,
-        ArticleImages: "ZC9knyUymlNT1ROv.jpg",
-        ArticleSEOTitle: "abc",
-        ArticleShortDescription: "fdsaf ",
-        ArticleTitle: "abc vknvka v n j ljnjfn nfj njfjf jfn jnjnfls n slvfbn sld njk skdfjn k sdk nks vnjfsndk skdndn vj kdsn kvnfsknfjkds vkfds",
-        CreatedDate: "2019-01-01T00:00:00",
-        LastModified: "2019-07-24T22:25:33.637"
-    },
-    {
-        ArticleAuthor: "Administrator",
-        ArticleContent: "<p>fdafasfa</p>↵",
-        ArticleID: 3,
-        ArticleImages: "ZC9knyUymlNT1ROv.jpg",
-        ArticleSEOTitle: "abc",
-        ArticleShortDescription: "fdsaf ",
-        ArticleTitle: "abc",
-        CreatedDate: "2019-01-01T00:00:00",
-        LastModified: "2019-07-24T22:25:33.637"
-    },
-    {
-        ArticleAuthor: "Administrator",
-        ArticleContent: "<p>fdafasfa</p>↵",
-        ArticleID: 4,
-        ArticleImages: "ZC9knyUymlNT1ROv.jpg",
-        ArticleSEOTitle: "abc",
-        ArticleShortDescription: "fdsaf ",
-        ArticleTitle: "abc",
-        CreatedDate: "2019-01-01T00:00:00",
-        LastModified: "2019-07-24T22:25:33.637"
-    }
-];
 const ROWS_PER_PAGE = 20;
 
 class Blog extends Component {
     state = {
         articles: [],
-        totalArticles: 0
+        totalArticles: 0,
+        showMoreStatus: STATUS.default,
+        getBlogStatus: STATUS.default
     };
     unmounted = false;
     pageNumber = 0;
@@ -84,7 +52,7 @@ class Blog extends Component {
     }
 
     handleBlogClick(article) {
-        this.props.history.push(`${PATH.BLOG}/${article.ArticleSEOTitle}`);
+        this.props.history.push(`${PATH.BLOG}/${article.ArticleSEOTitle}_${article.ArticleID}`);
     }
 
     render() {
@@ -92,11 +60,11 @@ class Blog extends Component {
             <PageLayout
                 bodyClassName={window.classnames(cls.bodyRoot)}
             >
-                {this.state.articles.map(article => <BlogComponent
-                    key={article.ArticleID}
-                    blog={article}
-                    onClick={this.handleBlogClick.bind(this)}
-                />)}
+                <ListBlog
+                    blogs={this.state.articles}
+                    showMoreStatus={this.state.showMoreStatus}
+                    searchStatus={this.state.getBlogStatus}
+                />
             </PageLayout>
         );
     }

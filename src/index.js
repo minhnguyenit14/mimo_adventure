@@ -1,3 +1,5 @@
+import "antd/dist/antd.css";
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 
@@ -16,7 +18,6 @@ import Routers from 'app-config/routers';
 import { PageContainer } from 'app-commons';
 
 // styles
-import "antd/dist/antd.css";
 import cls from 'app-config/App.module.scss';
 
 

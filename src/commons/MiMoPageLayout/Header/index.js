@@ -9,18 +9,22 @@ import { MENU, PATH, GET_ALL_PRODUCT_CATEGORIES, MENU_PRODUCT_ID, MENU_HOME_ID, 
 import { getStorage, setStorage, formatMenuFromApi, willUpdateState, getSelectedKey } from 'app-helpers';
 import { connect } from 'react-redux';
 import { setSelectedMenuKeys, setSmartPath } from 'app-redux/actions/menu';
+import { setSearchValue } from 'app-redux/actions/search';
 import qs from 'querystring';
 
 const smallDevice = parseInt(styles.smallDevice);
 const connector = connect(
     state => ({
-        menu: state.menu
+        menu: state.menu,
+        search: state.search
     }),
     dispatch => ({
         setSelectedMenuKeys: (selectedMenuKeys) =>
             dispatch(setSelectedMenuKeys(selectedMenuKeys)),
         setSmartPath: (smartPath) =>
             dispatch(setSmartPath(smartPath)),
+        setSearchValue: (searchValue) =>
+            dispatch(setSearchValue(searchValue))
     })
 )
 
@@ -99,6 +103,9 @@ class Header extends Component {
             this.determineSelectedMenuKeys(nextState.menu, nextProps);
             return false;
         }
+        if (nextProps.search !== this.props.search) {
+            return true
+        }
         return false;
     }
 
@@ -126,7 +133,7 @@ class Header extends Component {
 
         if (selectedKey) {
             props.setSelectedMenuKeys([selectedKey]);
-        }
+        } 
     }
 
     updateProductCategoriesOfMenu = (menu, productCategories) => {
@@ -204,7 +211,11 @@ class Header extends Component {
     showSearchBar = () => this.setState((prevState, props) => { return { showSearchBar: !prevState.showSearchBar } });
 
     onChangeSearch = (searchValue) => {
-        this.setState({ searchValue })
+        this.props.setSearchValue(searchValue)
+    }
+
+    onSearch = (value) => {
+        this.props.history.push(`${PATH.SEARCH}/${value}`)
     }
 
     renderCollapseButton = () => {
@@ -229,6 +240,7 @@ class Header extends Component {
             children,
             slidesData,
             menu: reduxMenu,
+            search: reduxSearch,
             ...headerProps
         } = this.props;
         const {
@@ -239,6 +251,9 @@ class Header extends Component {
             inlineCollapsed,
             menu
         } = this.state;
+        const {
+            searchValue
+        } = reduxSearch;
         const collapseMenuButton = this.renderCollapseButton();
         const menuJSX = <Menu
             onCollapseMenu={this.collapseMenu.bind(this)}
@@ -275,7 +290,8 @@ class Header extends Component {
                     : <Input
                         className={window.classnames(cls.searchLaptop)}
                         search
-                        value={this.state.searchValue}
+                        value={searchValue}
+                        onSearch={this.onSearch}
                         onChange={this.onChangeSearch} />}
             </Container>;
         return (
@@ -289,8 +305,9 @@ class Header extends Component {
                             )}>
                             <Input
                                 search
-                                value={this.state.searchValue}
+                                value={searchValue}
                                 onChange={this.onChangeSearch}
+                                onSearch={this.onSearch}
                             />
                         </div>
                     }

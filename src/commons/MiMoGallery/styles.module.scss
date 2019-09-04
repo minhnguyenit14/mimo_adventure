@@ -1,0 +1,34 @@
+@import '~appConfig/app_vars';
+
+[class*="image-gallery-thumbnail"] {
+    &[class*="active"] {
+        border-color: $borderColorDarker !important;
+
+        >div {
+            opacity: 1;
+        }
+    }
+}
+
+[class*="image-gallery-thumbnails-container"] {
+    white-space: unset !important;
+}
+
+
+[class*="image-gallery-right-nav"],
+[class*="image-gallery-left-nav"] {
+    &:focus {
+        outline: none !important;
+        opacity: 1;
+    }
+
+    &:hover {
+        opacity: 1;
+
+        &::before {
+            color: $primary !important;
+        }
+    }
+
+    opacity: .6;
+}

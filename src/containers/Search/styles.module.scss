@@ -1,0 +1,37 @@
+@import "~appConfig/app_vars";
+
+.productsContainer {
+    margin-top: $marginContainer * 6;
+    border-bottom: 1px dashed $borderColor;
+
+    @media screen and (max-width: $smallDevice) {
+        margin-top: $marginContainer * 3;
+    }
+}
+
+.blogsContainer {
+    margin-top: $marginContainer * 3;
+
+    @media screen and (max-width: $smallDevice) {
+        margin-top: $marginContainer * 1.5;
+    }
+}
+
+.productTitle {
+    @media screen and (max-width: $smallDevice) {
+        margin-bottom: $marginContainer * 2 !important;
+    }
+}
+
+.dot {
+    margin-bottom: $marginContainer * 2;
+
+    @media screen and (max-width: $smallDevice) {
+        margin-bottom: $marginContainer;
+    }
+
+    text-align: center;
+    font-weight: $fontExtraBold;
+    font-variant-caps: all-petite-caps;
+    font-size: 2rem;
+}

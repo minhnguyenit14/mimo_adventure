@@ -4,6 +4,8 @@ const PRODUCT = "/san-pham";
 const ABOUT_US = "/ve-chung-toi";
 const CONTACT = "/lien-he";
 const BLOG = "/blog";
+const SEARCH = "/tim-kiem";
+const NOT_FOUND = "/khong-tim-thay-trang";
 
 const PATH = {
     HOME,
@@ -11,7 +13,9 @@ const PATH = {
     ABOUT_US,
     CONTACT,
     BLOG,
-    LIST_PRODUCTS
+    LIST_PRODUCTS,
+    SEARCH,
+    NOT_FOUND
 }
 
 export default PATH;

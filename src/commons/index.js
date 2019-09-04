@@ -10,6 +10,7 @@ export { default as PageContainer } from './MiMoPageContainer';
 export { default as BackTop } from './MiMoBackTop';
 export { default as Menu } from './MiMoMenu';
 export { default as Image } from './MiMoImage';
+export { default as Gallery } from './MiMoGallery';
 export { default as Input } from './MiMoInput';
 export { default as Slider } from './MiMoSlider';
 export { default as Card } from './MiMoCard';

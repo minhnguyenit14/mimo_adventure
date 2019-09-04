@@ -91,8 +91,8 @@ class Home extends Component {
         )
     }
 
-    onProductClick = (id) => {
-        this.props.history.push(`${PATH.PRODUCTS}/${id}`);
+    onProductClick = (seoTitle, id) => {
+        this.props.history.push(`${PATH.PRODUCT}/${seoTitle}_${id}`);
     }
 
     render() {
@@ -106,15 +106,15 @@ class Home extends Component {
                         Sản phẩm nổi bật
                     </Heading>
                     <Row className={window.classnames(cls.cardContainer)}>
-                        {this.state.pinnedProducts.map((product, index) => <Card
+                        {this.state.pinnedProducts.map(product => <Card
                             className={window.classnames(cls.card)}
                             contentClassName={window.classnames(cls.cardContent)}
                             title={product.ProductName}
                             src={product.ProductThumbnail}
                             subTitle={product.ProductCategoryName}
-                            key={index}
+                            key={product.ProductID}
                             id={product.ProductID}
-                            onClick={this.onProductClick}
+                            onClick={(id) => this.onProductClick(product.ProductSEOTitle, id)}
                         />)}
                     </Row>
                 </Col>

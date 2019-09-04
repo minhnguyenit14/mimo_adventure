@@ -7,3 +7,4 @@ export const BANNER_PATH_KEY = "bannerPath";
 export const PRODUCT_THUMBNAIL_PATH_KEY = "productThumbnailPath";
 export const PRODUCT_PATH_KEY = "productPath";
 export const BLOG_THUMBNAIL_PATH_KEY = "blogThumbnailPath";
+export const IMAGE_PATH_KEY = "imagePath";

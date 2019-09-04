@@ -1,0 +1,5 @@
+const SET_SEARCH_VALUE= "SEARCH/SET_SEARCH_VALUE";
+
+export default {
+    SET_SEARCH_VALUE
+}

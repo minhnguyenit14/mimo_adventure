@@ -7,6 +7,9 @@ import {
     FacebookShareButton,
     FacebookShareCount
 } from 'react-share';
+import { PATH, GET_DETAIL_ARTICLE, ID_AKA } from 'app-constants';
+import { BLOG_THUMBNAIL_PATH_KEY, ADMIN_URL_KEY, IMAGE_PATH_KEY } from 'app-config/network';
+import { addUrlToImages, addImagesURLToHtmlContent } from 'app-helpers';
 
 const temp = {
     ArticleAuthor: "Administrator",
@@ -21,7 +24,48 @@ const temp = {
 }
 
 class BlogDetail extends PureComponent {
-    state = {};
+    state = {
+        blog: {}
+    };
+
+    componentDidMount() {
+        let { blogPath } = this.props.match.params;
+        let blogId = undefined;
+        if (blogPath) {
+            const pathArray = blogPath.split("_");
+            if (pathArray.length > 1) {
+                blogId = pathArray[pathArray.length - 1];
+                this.getBlog(blogId)
+            } else {
+                this.goToNotFound();
+            }
+        }
+    }
+
+    goToNotFound() {
+        this.props.history.push(PATH.NOT_FOUND);
+    }
+
+    getBlog(blogId) {
+        window.get(GET_DETAIL_ARTICLE.replace(ID_AKA, blogId)).then(
+            res => {
+                let blog = JSON.parse(res.data);
+                blog = addUrlToImages(
+                    [blog],
+                    `${res[ADMIN_URL_KEY]}${res[BLOG_THUMBNAIL_PATH_KEY]}`,
+                    "ArticleImages",
+                )[0];
+                blog.ArticleContent = addImagesURLToHtmlContent(
+                    blog.ArticleContent,
+                    res[ADMIN_URL_KEY],
+                    res[IMAGE_PATH_KEY]
+                );
+                this.setState({
+                    blog
+                })
+            }
+        )
+    }
 
     getLocaleDate(stringDate) {
         try {
@@ -42,7 +86,7 @@ class BlogDetail extends PureComponent {
                 <Container className={window.classnames(cls.blogDetailContainer)}>
                     <Col className={window.classnames(cls.header)}>
                         <Heading>
-                            {temp.ArticleTitle}
+                            {this.state.blog.ArticleTitle}
                         </Heading>
                         <Row className={window.classnames(cls.captionBlock)}>
                             <Row className={window.classnames(cls.captionItem)}>
@@ -50,7 +94,7 @@ class BlogDetail extends PureComponent {
                                     <FaUser />
                                 </div>
                                 <Caption>
-                                    {temp.ArticleAuthor}
+                                    {this.state.blog.ArticleAuthor}
                                 </Caption>
                             </Row>
 
@@ -61,7 +105,7 @@ class BlogDetail extends PureComponent {
                                     <FaClock />
                                 </div>
                                 <Caption>
-                                    {this.getLocaleDate(temp.LastModified)}
+                                    {this.getLocaleDate(this.state.blog.LastModified)}
                                 </Caption>
                             </Row>
                         </Row>
@@ -84,14 +128,15 @@ class BlogDetail extends PureComponent {
                     </Col>
                     <Col className={window.classnames(cls.descriptionContainer)}>
                         <Caption className={window.classnames(cls.description)}>
-                            {temp.ArticleShortDescription}
+                            {this.state.blog.ArticleShortDescription}
                         </Caption>
                     </Col>
-                    <Col className={window.classnames(cls.content)}>
-                        {renderHtml(temp.ArticleContent)}
-                    </Col>
+                    <div className={window.classnames(cls.content)}>
+                        {this.state.blog.ArticleContent &&
+                            renderHtml(this.state.blog.ArticleContent)}
+                    </div>
                 </Container>
-            </PageLayout>
+            </PageLayout >
         );
     }
 }
