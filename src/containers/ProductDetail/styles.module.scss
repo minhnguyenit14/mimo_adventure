@@ -11,13 +11,11 @@
 }
 
 .introContainer {
-    background-color: $productBg;
-    padding: $paddingContainer * 5;
-    padding-top: $paddingContainer * 2;
+    padding: $paddingContainer * 2 $paddingContainer * 5;
+    background-color: $footerColor;
 
     @media screen and(max-width: $smallDevice) {
-        padding: 0;
-        padding-top: $paddingContainer;
+        padding: $paddingContainer 0;
     }
 }
 
@@ -56,9 +54,34 @@
     flex: 58.3333%;
     -webkit-flex: 58.3333%;
 
+    [class*="image-gallery-slide"] {
+        background-color: inherit;
+    }
+
+    [class*="image-gallery-content fullscreen"] {
+        height: 100vh;
+
+        [class*="image-gallery-image"] {
+            >img {
+                max-height: 100vh;
+            }
+        }
+    }
+
+    [class*="image-gallery-image"] {
+
+        >img {
+            max-height: 450px;
+            max-width: 100%;
+            width: auto;
+            display: block;
+            margin: auto;
+        }
+    }
+
     @media screen and(max-width: $smallDevice) {
+        width: 100%;
         align-self: center;
-        margin-bottom: $marginContainer;
         flex: unset;
         -webkit-flex: unset;
     }
@@ -74,10 +97,11 @@
     padding: $paddingContainer;
     flex: 32.6667%;
     -webkit-flex: 32.6667%;
+    margin-top: 8%;
 
     @media screen and(max-width: $smallDevice) {
+        margin-top: 0;
         align-self: center;
-        margin-bottom: $paddingContainer;
         flex: unset;
         -webkit-flex: unset;
     }
@@ -109,7 +133,6 @@
     padding: $bodyPadding;
     background-color: $bg;
     font-size: $fontSizeStandard;
-    white-space: initial;
     white-space: initial;
 
     img {
@@ -143,7 +166,7 @@
         width: 10px;
         height: 16px;
         position: absolute;
-        top: 1px;
+        top: 4px;
         left: 7px;
         background-size: 457px;
     }
@@ -152,15 +175,18 @@
         cursor: pointer;
     }
 
-    margin-top: $marginContainer;
+    margin-top: $marginContainer*3;
     background: #4167b2;
-    padding-left: 20px;
-    height: 20px;
+    padding-top: 2.5px;
+    padding-left: 20px;    
+    padding-right: 8px;
+    padding-bottom: 2.5px;
+    height: 25px;
     display: block;
     line-height: 20px;
     text-decoration: none;
     color: #fff;
-    border-radius: 2px;
+    border-radius: $borderRadius;
     font-size: 12px;
     overflow: hidden;
     position: relative;

@@ -1,5 +1,10 @@
 @import '~appConfig/app_vars';
 
+[class*="image-gallery-content fullscreen"] {
+    height: 100vh;
+    @include flexCenter();
+}
+
 [class*="image-gallery-thumbnail"] {
     &[class*="active"] {
         border-color: $borderColorDarker !important;
@@ -26,7 +31,7 @@
         opacity: 1;
 
         &::before {
-            color: $primary !important;
+            color: $textMain !important;
         }
     }
 

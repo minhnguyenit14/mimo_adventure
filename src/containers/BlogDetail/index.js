@@ -4,24 +4,11 @@ import cls from './styles.module.scss';
 import { FaUser, FaClock } from 'react-icons/fa';
 import renderHtml from 'react-render-html';
 import {
-    FacebookShareButton,
-    FacebookShareCount
+    FacebookShareButton
 } from 'react-share';
 import { PATH, GET_DETAIL_ARTICLE, ID_AKA } from 'app-constants';
 import { BLOG_THUMBNAIL_PATH_KEY, ADMIN_URL_KEY, IMAGE_PATH_KEY } from 'app-config/network';
-import { addUrlToImages, addImagesURLToHtmlContent } from 'app-helpers';
-
-const temp = {
-    ArticleAuthor: "Administrator",
-    ArticleContent: "<p>fdafasfa</p>",
-    ArticleID: 2,
-    ArticleImages: "ZC9knyUymlNT1ROv.jpg",
-    ArticleSEOTitle: "abc",
-    ArticleShortDescription: "fdsaf ",
-    ArticleTitle: "abc vknvka v n j ljnjfn nfj njfjf jfn jnjnfls n slvfbn sld njk skdfjn k sdk nks vnjfsndk skdndn vj kdsn kvnfsknfjkds vkfds",
-    CreatedDate: "2019-01-01T00:00:00",
-    LastModified: "2019-07-24T22:25:33.637"
-}
+import { addUrlToImages, addImagesURLToHtmlContent, correctSEOTitle } from 'app-helpers';
 
 class BlogDetail extends PureComponent {
     state = {
@@ -60,6 +47,7 @@ class BlogDetail extends PureComponent {
                     res[ADMIN_URL_KEY],
                     res[IMAGE_PATH_KEY]
                 );
+                blog.ArticleSEOTitle = correctSEOTitle(blog.ArticleSEOTitle);
                 this.setState({
                     blog
                 })
@@ -89,7 +77,7 @@ class BlogDetail extends PureComponent {
                             {this.state.blog.ArticleTitle}
                         </Heading>
                         <Row className={window.classnames(cls.captionBlock)}>
-                            <Row className={window.classnames(cls.captionItem)}>
+                            {/* <Row className={window.classnames(cls.captionItem)}>
                                 <div className={window.classnames(cls.captionIcon)}>
                                     <FaUser />
                                 </div>
@@ -98,7 +86,7 @@ class BlogDetail extends PureComponent {
                                 </Caption>
                             </Row>
 
-                            <em className={window.classnames(cls.point)}></em>
+                            <em className={window.classnames(cls.point)}></em> */}
 
                             <Row className={window.classnames(cls.captionItem)}>
                                 <div className={window.classnames(cls.captionIcon)}>
@@ -113,15 +101,6 @@ class BlogDetail extends PureComponent {
                             <FacebookShareButton url={window.location.href} >
                                 <div className={window.classnames(cls.fbContainer)}>
                                     Chia sẻ
-                                <div className={window.classnames(cls.fbShareCount)}>
-                                        <FacebookShareCount url={window.location.href}>
-                                            {shareCount => (
-                                                <div>
-                                                    {shareCount}
-                                                </div>
-                                            )}
-                                        </FacebookShareCount>
-                                    </div>
                                 </div>
                             </FacebookShareButton>
                         </Col>

@@ -1,7 +1,7 @@
 import "antd/dist/antd.css";
 
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { render } from 'react-dom';
 
 import * as serviceWorker from './serviceWorker';
 
@@ -13,6 +13,7 @@ import 'app-config/global';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import Routers from 'app-config/routers';
+import smoothscroll from 'smoothscroll-polyfill';
 
 // components
 import { PageContainer } from 'app-commons';
@@ -20,6 +21,8 @@ import { PageContainer } from 'app-commons';
 // styles
 import cls from 'app-config/App.module.scss';
 
+// kick off the polyfill!
+smoothscroll.polyfill();
 
 function noop() { }
 
@@ -47,9 +50,15 @@ const Root = ({ store }) => (
 )
 // );
 
-ReactDOM.render(<Root store={store} />, document.getElementById('root'));
+const rootElement = document.getElementById("root");
+const App = <Root store={store} />
+// if (rootElement.hasChildNodes()) {
+//     hydrate(App, rootElement);
+// } else {
+    render(App, rootElement);
+// }
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+serviceWorker.register();

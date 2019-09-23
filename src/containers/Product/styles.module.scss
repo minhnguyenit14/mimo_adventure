@@ -1,14 +1,15 @@
 @import '~appConfig/app_vars';
 
-.productBody {
+.container {
+    justify-content: center;
 }
 
 .filter {
     flex: .25;
     -webkit-flex: .25;
     max-width: 300px;
-    margin-right: $marginContainer;
-    margin-top: $marginContainer * 5.5;
+    margin-right: $marginContainer * 2;
+    margin-top: $marginContainer * 4;
     align-self: flex-start;
 
     [class*="ant-menu-submenu-selected"] {
@@ -56,14 +57,18 @@
 }
 
 .product {
-    flex: .75;
-    -webkit-flex: .75;
-    align-self: flex-start;
+    width: 100%;
+
+    @media screen and(min-width: $smallDevice) {
+        flex: .75;
+        -webkit-flex: .75;
+        align-self: flex-start;
+    }
 }
 
 .productHeading {
     text-indent: $paddingContainer*3;
-    margin-bottom: $marginContainer*3.5;
+    margin-bottom: $marginContainer*2;
     font-variant-caps: all-petite-caps;
     font-weight: 700;
     letter-spacing: 1.5px;
@@ -73,7 +78,6 @@
         margin-bottom: $marginContainer *2;
         text-indent: $paddingContainer;
         color: $textMain !important;
-        font-size: 1rem !important;
     }
 
     &::before {
@@ -93,4 +97,31 @@
         outline: none !important;
         box-shadow: none !important;
     }
+}
+
+.bannerImageWrapper {
+    height: 80vh;
+    position: relative;
+    min-height: $superSmallDevice;
+    max-height: $largeDevice;
+
+    @media screen and (max-width: $superSmallDevice) {
+        min-height: $superSmallDevice*.7;
+        max-height: $largeDevice;
+        height: 65vh;
+    }
+}
+
+.bannerImage {
+    cursor: pointer;
+    display: block;
+    background-size: cover;
+    background-position: center center;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 1;
 }

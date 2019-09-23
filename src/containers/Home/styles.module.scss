@@ -5,7 +5,6 @@
 }
 
 .bodyContainer {
-    max-width: $fullHDDevice;
     margin: 0 auto;
     background-color: $bg;
     padding-left: $paddingContainer;
@@ -16,8 +15,37 @@
     }
 }
 
-.bannerImage{
+.bodySize {
+    @include appSize;
+    display: block;
+    margin: auto;
+}
+
+.bannerImageWrapper {
+    height: 80vh;
+    position: relative;
+    min-height: $superSmallDevice;
+    max-height: $largeDevice;
+
+    @media screen and (max-width: $superSmallDevice) {
+        min-height: $superSmallDevice*.7;
+        max-height: $largeDevice;
+        height: 65vh;
+    }
+}
+
+.bannerImage {
     cursor: pointer;
+    display: block;
+    background-size: cover;
+    background-position: center center;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 1;
 }
 
 .companyIntro {
@@ -77,13 +105,13 @@
 }
 
 .featuredTitle {
-    padding-top: $paddingContainer * 4;
+    padding-top: $paddingContainer * 2;
     margin-bottom: $paddingContainer * 2;
     text-transform: uppercase;
     letter-spacing: 1.5px;
 
     @media screen and (max-width: $smallDevice) {
-        padding-top: $paddingContainer * 2;
+        padding-top: $paddingContainer;
         margin-top: $paddingContainer/2;
 
     }

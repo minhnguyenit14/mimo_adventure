@@ -2,6 +2,12 @@
 
 button {
     color: $textMain;
+
+    [class*="anticon-loading"] {
+        margin: auto;
+        margin-left: -14px;
+        margin-right: 5px;
+    }
 }
 
 .buttonContainer {

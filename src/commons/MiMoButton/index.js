@@ -15,10 +15,14 @@ class MiMoButton extends PureComponent {
             children,
             title,
             callBackRef,
+            loading,
+            disabled,
             ...buttonProps
         } = this.props;
         return (
             <Button
+                loading={loading}
+                disabled={disabled || loading}
                 onClick={this.handleClick.bind(this)}
                 className={window.classnames(cls.buttonContainer, className)}
                 {...buttonProps}

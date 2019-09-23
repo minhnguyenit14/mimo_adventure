@@ -37,6 +37,7 @@
 }
 
 .heading {
+    word-break: break-word;
     @media screen and (max-width: $smallDevice) {
         width: 100%;
     }

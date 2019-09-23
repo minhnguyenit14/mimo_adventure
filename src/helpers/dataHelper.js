@@ -11,9 +11,11 @@ export const addUrlToImages = (images, hostUrl, imageKey, splitter = null) => {
                     let arrayImages = image[imageKey].split(splitter);
                     arrayImages = arrayImages.map(img => `${hostUrl}/${img}`);
                     image[imageKey] = arrayImages;
+                } else {
+                    image[imageKey] = `${hostUrl}/${image[imageKey]}`;
                 }
             } else {
-                image[imageKey] = `${hostUrl}/${image[imageKey]}`
+                image[imageKey] = `${hostUrl}/${image[imageKey]}`;
             }
         });
     }

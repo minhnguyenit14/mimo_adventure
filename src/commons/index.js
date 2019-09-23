@@ -15,3 +15,4 @@ export { default as Input } from './MiMoInput';
 export { default as Slider } from './MiMoSlider';
 export { default as Card } from './MiMoCard';
 export { default as Link } from './MiMoLink';
+export { default as Loading } from './MiMoLoading';

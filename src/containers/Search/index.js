@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { PageLayout, Container, Heading } from 'app-commons';
-import { POST_SEARCH_PRODUCT, POST_SEARCH_ARTICLE } from 'constants/api';
+import { POST_SEARCH_PRODUCT, POST_SEARCH_ARTICLE, POST_HOME_INSERT_SEARCH_KEYWORD } from 'constants/api';
 import { STATUS } from 'app-constants';
 import ListProduct from '../Product/ListProduct';
 import {
@@ -35,7 +35,8 @@ class Search extends Component {
         searchBlogStatus: STATUS.default,
         showMoreBlogStatus: STATUS.default,
     };
-    page = 0;
+    productPageNumber = 0;
+    blogPageNumber = 0;
     unmounted = false;
 
     shouldComponentUpdate(nextProps, nextState) {
@@ -58,6 +59,7 @@ class Search extends Component {
         this.props.setSearchValue(searchValue);
         this.searchProduct(searchValue);
         this.searchBlog(searchValue);
+        this.insertKeyWord(searchValue);
     }
 
     componentWillUnmount() {
@@ -65,15 +67,33 @@ class Search extends Component {
         this.unmounted = true;
     }
 
-    searchProduct(searchValue) {
+    insertKeyWord(searchValue) {
+        window.post(POST_HOME_INSERT_SEARCH_KEYWORD, {
+            keyword: searchValue
+        }).then(
+            res => {
+                console.log('increase search keyword', res);
+            }
+        )
+    }
+
+    searchProduct(searchValue, showMore = false) {
         const body = {
             where: searchValue,
-            page: this.page,
+            page: this.productPageNumber,
             rows: ROWS_PER_PAGE
         }
-        this.setState({
-            searchProductStatus: STATUS.loading
-        })
+
+        if (showMore) {
+            this.setState({
+                showMoreProductStatus: STATUS.loading
+            });
+        } else {
+            this.setState({
+                searchProductStatus: STATUS.loading
+            });
+        }
+
         window.post(POST_SEARCH_PRODUCT, body).then(
             res => {
                 const productData = JSON.parse(res.data);
@@ -89,6 +109,10 @@ class Search extends Component {
                     product.ProductPrice = toMoneyFormat(product.ProductPrice)
                 );
 
+                if (showMore) {
+                    products = [...this.state.products.concat(products)];
+                }
+
                 willUpdateState(
                     () => {
                         this.setState({
@@ -103,22 +127,35 @@ class Search extends Component {
         ).catch(
             err => {
                 console.log('searchProduct', err);
-                this.setState({
-                    searchProductStatus: STATUS.error
-                })
+                willUpdateState(
+                    () => {
+                        this.setState({
+                            searchProductStatus: STATUS.error
+                        })
+                    },
+                    this.unmounted
+                );
             }
-        )
+        );
     }
 
-    searchBlog(searchValue) {
+    searchBlog(searchValue, showMore = false) {
         const body = {
             where: searchValue,
-            page: this.page,
+            page: this.blogPageNumber,
             rows: ROWS_PER_PAGE
         }
-        this.setState({
-            loadingSearchBlog: STATUS.loading
-        })
+
+        if (showMore) {
+            this.setState({
+                showMoreBlogStatus: STATUS.loading
+            })
+        } else {
+            this.setState({
+                searchBlogStatus: STATUS.loading
+            })
+
+        }
         window.post(POST_SEARCH_ARTICLE, body).then(
             res => {
                 const blogData = JSON.parse(res.data);
@@ -130,11 +167,15 @@ class Search extends Component {
                     'ArticleImages'
                 );
 
+                if (showMore) {
+                    blogs = [...this.state.blogs.concat(blogs)];
+                }
+
                 willUpdateState(
                     () => this.setState({
                         blogs,
                         totalBlogs,
-                        loadingSearchBlog: STATUS.success
+                        searchBlogStatus: STATUS.success
                     }),
                     this.unmounted
                 )
@@ -142,25 +183,43 @@ class Search extends Component {
         ).catch(
             err => {
                 console.log('searchBlog', err);
-                this.setState({
-                    loadingSearchBlog: STATUS.error
-                })
+                willUpdateState(
+                    () => this.setState({
+                        searchBlogStatus: STATUS.error
+                    }),
+                    this.unmounted
+                )
             }
         )
     }
 
+    showMoreProducts = () => {
+        this.productPageNumber++;
+        this.searchProduct(this.props.search.searchValue, true);
+    }
+
+    showMoreBlogs = () => {
+        this.blogPageNumber++;
+        this.searchBlog(this.props.search.searchValue, true);
+    }
+
     render() {
+        const isGetFullProducts = this.state.products.length === this.state.totalProducts;
+        const isGetFullBlogs = this.state.blogs.length === this.state.totalBlogs;
+
         return (
-            <PageLayout
-            >
+            <PageLayout>
                 <Container className={window.classnames(cls.productsContainer)}>
                     <Heading type={2} className={window.classnames(cls.dot, cls.productTitle)}>
                         Sản phẩm
                     </Heading>
                     <ListProduct
+                        gridClassName={window.classnames(cls.searchProductGrid)}
                         products={this.state.products}
                         searchStatus={this.state.searchProductStatus}
                         showMoreStatus={this.state.showMoreProductStatus}
+                        isShowMore={!isGetFullProducts}
+                        showMore={this.showMoreProducts}
                     />
                 </Container>
 
@@ -172,6 +231,8 @@ class Search extends Component {
                         blogs={this.state.blogs}
                         searchStatus={this.state.searchBlogStatus}
                         showMoreStatus={this.state.showMoreBlogStatus}
+                        isShowMore={!isGetFullBlogs}
+                        showMore={this.showMoreBlogs}
                     />
                 </Container>
             </PageLayout>

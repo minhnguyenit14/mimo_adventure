@@ -1,18 +1,32 @@
 import React, { PureComponent } from 'react';
 import { FaFacebook, FaLocationArrow, FaPhone, FaFax } from 'react-icons/fa';
-import { Container, Image, Row, Paragraph, Link } from 'app-commons';
+import { Container, Image, Row, Paragraph, Link, Col } from 'app-commons';
 import cls from './styles.module.scss';
 import { MENU, GET_HOME_COMPANY_INFO } from 'app-constants';
 import { getStorage, setStorage, willUpdateState } from 'app-helpers';
+import { withRouter } from 'react-router-dom';
+import { isMobile } from 'react-device-detect';
+import {
+    mobile
+} from 'appConfig/app_vars.scss';
+
+const mobileWidth = Number.parseInt(mobile);
 
 class Footer extends PureComponent {
 
     state = {
-        companyInfo: {}
+        companyInfo: {},
+        isChangeLayout: this.isMobileDevice()
     };
     unmounted = false;
 
+    isMobileDevice() {
+        return isMobile || window.innerWidth <= mobileWidth
+    }
+
     componentDidMount() {
+        window.addEventListener('resize', this.handleDeviceResize.bind(this))
+
         let cache = getStorage();
         if (cache.companyInfo && Object.keys(cache.companyInfo).length !== 0) {
             willUpdateState(
@@ -37,6 +51,14 @@ class Footer extends PureComponent {
 
     componentWillUnmount() {
         this.unmounted = true;
+        window.removeEventListener('resize', this.handleDeviceResize.bind(this));
+    }
+
+    handleDeviceResize() {
+        willUpdateState(
+            () => this.setState({ isChangeLayout: this.isMobileDevice() }),
+            this.unmounted
+        );        
     }
 
     getCompanyInfo() {
@@ -58,70 +80,88 @@ class Footer extends PureComponent {
     }
 
     render() {
-        const { companyInfo } = this.state;
-        const { children, ...footerProps } = this.props;
+        const { companyInfo, isChangeLayout } = this.state;
+        const companyInfoNode = <div key={0} className={window.classnames(cls.companyInfo)}>
+            <div>
+                <Row className={window.classnames(cls.addressRow)}>
+                    <Paragraph className={window.classnames(cls.infoTitle)}>Địa chỉ:</Paragraph>
+
+                    <Paragraph className={window.classnames(cls.infoParagraph)}>
+                        {companyInfo.CompanyHeadOffice}
+                    </Paragraph>
+                </Row>
+                <Row className={window.classnames(cls.addressRow, cls.phone)}>
+                    <div>
+                        <Paragraph className={window.classnames(cls.infoTitle)}>Điện thoại:</Paragraph>
+                    </div>
+
+                    <Paragraph className={window.classnames(cls.infoParagraph)}>
+                        {companyInfo.CompanyPhone}
+                    </Paragraph>
+                </Row>
+                <Row className={window.classnames(cls.addressRow)}>
+                    <Paragraph className={window.classnames(cls.infoTitle)}>Fax:</Paragraph>
+
+                    <Paragraph className={window.classnames(cls.infoParagraph)}>
+                        {companyInfo.CompanyFax}
+                    </Paragraph>
+                </Row>
+            </div>
+        </div>;
+        const logoNode = <Col key={1} className={window.classnames(cls.imgWrapper)}>
+            <Image
+                containerClassName={window.classnames(cls.imgContainer)}
+                height="100px"
+                src={require('assets/images/logo/logo.png')}
+            />
+            <Row className={window.classnames(cls.addressRow)}>
+                <Link
+                    className={window.classnames(cls.infoParagraph)}
+                    href={`${companyInfo.CompanyFacebook}`}
+                    target='_blank'
+                    rel="noopener noreferrer"
+                >
+                    <FaFacebook
+                        className={window.classnames(cls.facebookIcon)}
+                    />
+                </Link>
+            </Row>
+        </Col>;
+
         return (
             <Container
                 className={window.classnames(cls.footerContainer)}
-                {...footerProps}
             >
-                <div className={window.classnames(cls.footerMenuContainer)}>
-                    {
-                        MENU.map((menu, index) => <Paragraph
-                            key={index}
-                            link
-                            className={window.classnames(cls.menuItem)}
-                        >
-                            {menu.title}
-                        </Paragraph>)
-                    }
-                </div>
-                <Row className={window.classnames(cls.companyInfoContainer)}>
-                    <Image
-                        containerClassName={window.classnames(cls.imgContainer)}
-                        height="100px"
-                        src={require('assets/images/logo/logo.png')}
-                    />
-                    <div className={window.classnames(cls.companyInfo)}>
-                        <Row className={window.classnames(cls.addressRow)}>
-                            <FaLocationArrow className={window.classnames(cls.infoIcon)} />
-                            <Paragraph className={window.classnames(cls.infoParagraph)}>
-                                {companyInfo.CompanyHeadOffice}
-                            </Paragraph>
-                        </Row>
-                        <Row className={window.classnames(cls.addressRow)}>
-                            <FaPhone className={window.classnames(cls.infoIcon)} />
-                            <Paragraph className={window.classnames(cls.infoParagraph)}>
-                                {companyInfo.CompanyPhone}
-                            </Paragraph>
-                        </Row>
-                        <Row className={window.classnames(cls.addressRow)}>
-                            <FaFax className={window.classnames(cls.infoIcon)} />
-                            <Paragraph className={window.classnames(cls.infoParagraph)}>
-                                {companyInfo.CompanyFax}
-                            </Paragraph>
-                        </Row>
-                        <Row className={window.classnames(cls.addressRow)}>
-                            <FaFacebook className={window.classnames(cls.infoIcon)} />
-                            <Link
-                                className={window.classnames(cls.infoParagraph)}
-                                href={`https://${companyInfo.CompanyFacebook}`}
-                                target='_blank'
-                                rel="noopener noreferrer"
-                            >
-                                {companyInfo.CompanyFacebook}
-                            </Link>
-                        </Row>
+                <div className={window.classnames(cls.footerWrapper)}>
+                    <div className={window.classnames(cls.footerMenuOuter)}>
+                        <div className={window.classnames(cls.footerMenuContainer)}>
+                            {
+                                MENU.map((menu, index) => <Paragraph
+                                    key={index}
+                                    link
+                                    className={window.classnames(cls.menuItem)}
+                                    onClick={() => this.props.history.push(menu.seoTitle)}
+                                >
+                                    {menu.title}
+                                </Paragraph>)
+                            }
+                        </div>
                     </div>
-                </Row>
+                    {isChangeLayout
+                        ? [logoNode, companyInfoNode]
+                        : [companyInfoNode, logoNode]
+                    }
+
+                </div>
+
                 <div className={window.classnames(cls.copyright)}>
                     <Paragraph>
-                        © 2019 demoProjects
-                    </Paragraph>
+                        © 2019 An Nguyen
+                        </Paragraph>
                 </div>
-            </Container>
+            </Container >
         );
     }
 }
 
-export default Footer;
+export default withRouter(Footer);

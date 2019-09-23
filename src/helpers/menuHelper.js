@@ -10,13 +10,13 @@ export const formatMenuFromApi = (menu) => {
             temp = {
                 key: String(item.ProductCategoryID),
                 title: item.ProductCategoryName,
-                seoTitle: item.ProductCategorySEOTitle,
+                seoTitle: correctSEOTitle(item.ProductCategorySEOTitle),
                 children: []
             };
             smartTemp = [];
             smartTemp.push({
                 key: String(item.ProductCategoryID),
-                seoTitle: item.ProductCategorySEOTitle,
+                seoTitle: correctSEOTitle(item.ProductCategorySEOTitle),
                 title: item.ProductCategoryName
             });
             if (item.NumOfChild > 0) {
@@ -37,13 +37,13 @@ const recursiveMenu = (menu, temp, level) => {
                 {
                     key: String(item.ProductCategoryID),
                     title: item.ProductCategoryName,
-                    seoTitle: item.ProductCategorySEOTitle,
+                    seoTitle: correctSEOTitle(item.ProductCategorySEOTitle),
                     children: []
                 }
             )
             smartTemp.push({
                 key: String(item.ProductCategoryID),
-                seoTitle: item.ProductCategorySEOTitle,
+                seoTitle: correctSEOTitle(item.ProductCategorySEOTitle),
                 title: item.ProductCategoryName
             })
 
@@ -85,4 +85,8 @@ export const getSelectedKeyRecursive = (menu, selectedMenuName) => {
             getSelectedKeyRecursive(item.children, selectedMenuName);
         }
     })
+}
+
+export const correctSEOTitle = (seoTitle) => {
+    return seoTitle.replace(/ /g, "-");
 }

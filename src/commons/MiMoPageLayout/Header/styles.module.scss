@@ -31,19 +31,26 @@ $bgHeader: #fff;
 }
 
 .headerWrapper {
-    @include headerTheme;
     flex: none;
 }
 
-.headerContainer {
+.headerOuter {
     @include headerTheme;
+    position: fixed;
+    z-index: 10;
+    width: 100%;
+}
+
+.headerContainer {
     @include appSize;
+    margin: unset;
+    left: 50%;
+    transform: translateX(-50%);
     padding: 0 $paddingContainer 0 $paddingContainer;
     flex-direction: row !important;
     -webkit-flex-direction: row !important;
-    position: fixed;
+    
     top: 0;
-    z-index: 10;
     height: $headerHeight;
 
     @media screen and (max-width: $smallDevice) {
@@ -53,10 +60,10 @@ $bgHeader: #fff;
 }
 
 .slider {
-    padding-top: $headerHeight;
+    // padding-top: $headerHeight;
     @include headerTheme();
 
-    @media screen and (max-width: $smallDevice) {
+    @media screen and (max-width: $superSmallDevice) {
         padding-top: $headerMobileHeight;
     }
 }

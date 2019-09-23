@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { PageLayout } from 'app-commons';
-import BlogComponent from './BlogComponent';
 import cls from './styles.module.scss';
 import { PATH, GET_PAGING_ARTICLE, STATUS } from 'app-constants';
 import { willUpdateState, addUrlToImages } from 'app-helpers';
@@ -14,7 +13,7 @@ class Blog extends Component {
         articles: [],
         totalArticles: 0,
         showMoreStatus: STATUS.default,
-        getBlogStatus: STATUS.default
+        searchStatus: STATUS.default
     };
     unmounted = false;
     pageNumber = 0;
@@ -28,7 +27,17 @@ class Blog extends Component {
         this.unmounted = true;
     }
 
-    getBlog(pageNumber = this.pageNumber, rowsPerPage = ROWS_PER_PAGE) {
+    getBlog(showMore = false, pageNumber = this.pageNumber, rowsPerPage = ROWS_PER_PAGE) {
+        if (showMore) {
+            this.setState({
+                showMoreStatus: STATUS.loading
+            })
+        } else {
+            this.setState({
+                searchStatus: STATUS.loading
+            })
+        }
+
         window.get(GET_PAGING_ARTICLE, { pageNumber, rowsPerPage }).then(
             res => {
                 const articleData = JSON.parse(res.data);
@@ -40,15 +49,38 @@ class Blog extends Component {
                     'ArticleImages'
                 );
 
+                if (showMore) {
+                    articles = [...this.state.articles].concat(articles);
+                }
+
                 willUpdateState(
-                    () => this.setState({
+                    () => this.setState(prevState => ({
                         articles,
-                        totalArticles
-                    }),
+                        totalArticles,
+                        searchStatus: STATUS.finish,
+                        showMoreStatus: showMore ? STATUS.finish : prevState.showMoreStatus
+                    })
+                    ),
+                    this.unmounted
+                )
+            }
+        ).catch(
+            err => {
+                willUpdateState(
+                    () => this.setState(prevState => ({
+                        searchStatus: STATUS.error,
+                        showMoreStatus: showMore ? STATUS.error : prevState.showMoreStatus
+                    })
+                    ),
                     this.unmounted
                 )
             }
         )
+    }
+
+    showMore = () => {
+        this.pageNumber++;
+        this.getBlog(true);
     }
 
     handleBlogClick(article) {
@@ -56,6 +88,7 @@ class Blog extends Component {
     }
 
     render() {
+        const isGetFullBlogs = this.state.articles.length === this.state.totalArticles;
         return (
             <PageLayout
                 bodyClassName={window.classnames(cls.bodyRoot)}
@@ -63,7 +96,9 @@ class Blog extends Component {
                 <ListBlog
                     blogs={this.state.articles}
                     showMoreStatus={this.state.showMoreStatus}
-                    searchStatus={this.state.getBlogStatus}
+                    searchStatus={this.state.searchStatus}
+                    showMore={this.showMore}
+                    isShowMore={!isGetFullBlogs}
                 />
             </PageLayout>
         );

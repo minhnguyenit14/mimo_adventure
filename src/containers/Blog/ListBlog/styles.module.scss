@@ -1,0 +1,28 @@
+@import "~appConfig/app_vars";
+
+.btnShowMore {
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: $textMain;
+    outline: none !important;
+    border: none !important;
+
+    &:hover,
+    &:focus {
+        background-color: $textBase;
+    }
+
+    &:active {
+        background-color: #000;
+    }
+
+    p {
+        color: #fff
+    }
+}
+
+.btnLoading {
+    p {
+        color: inherit;
+    }
+}

@@ -101,7 +101,7 @@ export const MENU = [
         key: MENU_PRODUCT_ID,
         seoTitle: PATH.LIST_PRODUCTS,
         title: "Sản phẩm",
-        children: [...PRODUCT_MENU]
+        children: []
     },
     {
         key: MENU_BLOG_ID,

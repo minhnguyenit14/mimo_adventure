@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Row, Col, Menu, Heading, Card } from 'app-commons';
+import { Row, Col, Menu, Heading } from 'app-commons';
 import cls from './styles.module.scss';
-import { PATH, POST_PAGING_PRODUCT } from 'app-constants';
+import { PATH, POST_PAGING_PRODUCT, MENU, MENU_PRODUCT_ID } from 'app-constants';
 import {
     getStorage,
     willUpdateState,
@@ -47,12 +47,14 @@ class Product extends Component {
     state = {
         searchValue: '',
         productCategories: [],
+        totalProducts: 0,
         products: [],
         openKeys: []
     };
     getProductCategoriesInterval = null;
     unmounted = false;
     gotProducts = false;
+    pageNumber = 0;
 
     shouldComponentUpdate(nextProps, nextState) {
         if (nextProps.menuRedux.selectedMenuKeys !== this.props.menuRedux.selectedMenuKeys
@@ -70,16 +72,11 @@ class Product extends Component {
     componentDidMount() {
         this.getProductCategoriesInterval = setInterval(() => this.getProductCategories(), 200);
         this.getProducts();
-        console.log('didmount');
     }
 
     componentWillUnmount() {
         this.unmounted = true;
         clearInterval(this.getProductCategoriesInterval);
-    }
-
-    componentDidUpdate(prevProps, prevState) {
-        console.log('product')
     }
 
     getProductCategories() {
@@ -91,8 +88,15 @@ class Product extends Component {
         if (cache.productCategories && cache.productCategories.length !== 0) {
             willUpdateState(
                 () => {
+                    let productCategories = [...cache.productCategories]
+                    productCategories.unshift({
+                        key: MENU_PRODUCT_ID,
+                        seoTitle: PATH.LIST_PRODUCTS,
+                        title: "Tất cả",
+                        children: []
+                    });
                     this.setState({
-                        productCategories: cache.productCategories
+                        productCategories
                     });
                     this.getDefaultOpenMenuKeys(this.props.menuRedux);
                 },
@@ -102,19 +106,28 @@ class Product extends Component {
         }
     }
 
-    getProducts(whereClause = "") {
-        this.props.getProducts(POST_PAGING_PRODUCT, whereClause, 0, ROWS_PER_PAGE,
+    getProducts(whereClause = "", showMore = false) {
+        this.props[showMore ? "showMoreProduct" : "getProducts"](POST_PAGING_PRODUCT, whereClause, this.pageNumber, ROWS_PER_PAGE,
             (res) => {
+                let ProductData = JSON.parse(res.data);
                 let products = addUrlToImages(
-                    JSON.parse(JSON.parse(res.data).data),
+                    JSON.parse(ProductData.data),
                     `${res[ADMIN_URL_KEY]}${res[PRODUCT_THUMBNAIL_PATH_KEY]}`,
                     ['ProductThumbnail', 'ProductImages']
                 );
                 products.forEach(product =>
                     product.ProductPrice = toMoneyFormat(product.ProductPrice)
                 );
+
+                if (showMore) {
+                    products = [...this.state.products.concat(products)];
+                }
+
                 willUpdateState(
-                    () => this.setState({ products })
+                    () => this.setState({
+                        products,
+                        totalProducts: ProductData.totalRecords
+                    })
                     , this.unmounted
                 );
                 this.props.setProducts(products);
@@ -124,7 +137,12 @@ class Product extends Component {
 
     hanldeMenuClick(item) {
         this.props.setSelectedMenuKeys([item.key]);
-        this.props.history.push(`${PATH.LIST_PRODUCTS}/${item.seoTitle}`);
+
+        if (item.key === MENU_PRODUCT_ID) {
+            this.props.history.push(PATH.LIST_PRODUCTS);
+        } else {
+            this.props.history.push(`${PATH.LIST_PRODUCTS}/${item.seoTitle}`);
+        }
     }
 
     onChangeSearch = (searchValue) => { this.setState({ searchValue }) }
@@ -175,6 +193,11 @@ class Product extends Component {
         return ALL_PRODUCT_SHORCUT;
     }
 
+    showMore = () => {
+        this.pageNumber++;
+        this.getProducts(Number(this.props.menuRedux.selectedMenuKeys[0]), true);
+    }
+
     render() {
         const { openKeys, productCategories, products } = this.state;
         const {
@@ -186,9 +209,11 @@ class Product extends Component {
             showMoreStatus
         } = this.props.product;
         const shortcut = this.getShortCut(selectedMenuKeys, smartPath);
+        const isGetFullProducts = this.state.products.length === this.state.totalProducts;
+
         return (
             <>
-                <Row className={window.classnames(cls.bodyContainer)}>
+                <Row className={window.classnames(cls.container)}>
                     <Col className={window.classnames(cls.filter)}>
                         <Menu
                             menu={productCategories}
@@ -208,6 +233,8 @@ class Product extends Component {
                             searchStatus={searchStatus}
                             showMoreStatus={showMoreStatus}
                             products={products}
+                            isShowMore={!isGetFullProducts}
+                            showMore={this.showMore}
                         />
                     </Col>
                 </Row>

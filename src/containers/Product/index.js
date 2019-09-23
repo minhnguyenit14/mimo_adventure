@@ -6,7 +6,8 @@ import {
     getStorage,
     setStorage,
     willUpdateState,
-    addUrlToImages
+    addUrlToImages,
+    scrollToBody
 } from 'app-helpers';
 import { BANNER_PATH_KEY, ADMIN_URL_KEY } from 'app-config/network';
 import { default as ProductComp } from './Product';
@@ -17,8 +18,11 @@ class Product extends Component {
         slidesData: []
     };
     unmounted = false;
+    refProduct = React.createRef();
 
     componentDidMount() {
+        scrollToBody();
+        
         let cache = getStorage();
         if (cache.productBanner && cache.productBanner.length !== 0) {
             willUpdateState(
@@ -53,12 +57,16 @@ class Product extends Component {
     }
 
     createSlidesData(banners) {
-        return banners.map(banner => <Image
+        return banners.map(banner => <div
             key={banner.BannerID}
-            className={window.classnames(cls.bannerImage)}
-            src={banner.BannerImage}
-            onClick={() => window.open(banner.BannerLink, '_blank')}
-        />
+            className={window.classnames(cls.bannerImageWrapper)}
+        >
+            <div
+                className={window.classnames(cls.bannerImage)}
+                style={{ backgroundImage: `url(${banner.BannerImage})` }}
+                onClick={() => window.open(banner.BannerLink, '_blank')}
+            ></div>
+        </div>
         )
     }
 
@@ -85,7 +93,9 @@ class Product extends Component {
                 slidesData={this.state.slidesData}
                 bodyClassName={window.classnames(cls.productBody)}
             >
-                <ProductComp />
+                <div ref={this.refProduct}>
+                    <ProductComp />
+                </div>
             </PageLayout>
         );
     }

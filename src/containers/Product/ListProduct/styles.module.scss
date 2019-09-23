@@ -8,7 +8,14 @@
     display: -webkit-flex;
     display: flex;
 
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(26%, 1fr));
+    grid-gap: 5%;
+
     @media screen and(max-width: $smallDevice) {
+        grid-template-columns: repeat(auto-fill, minmax(48%, 1fr));
+        grid-gap: 1em;
+
         justify-content: space-between;
         flex-direction: row;
         -webkit-flex-direction: row;
@@ -16,16 +23,16 @@
 }
 
 .card {
-    max-width: 26%;
+    // max-width: 26%;
     margin: 0 auto;
     margin-bottom: $marginContainer * 3;
     align-self: flex-start;
 
     @media screen and(max-width: $underMobile) {
-        width: 50% !important;
+        // width: 50% !important;
         margin: unset;
         margin-bottom: $marginContainer * 3;
-        max-width: 48%;
+        // max-width: 48%;
     }
 }
 
@@ -35,5 +42,32 @@
     @media screen and (max-width: $smallDevice) {
         align-items: flex-start;
         margin-top: $marginContainer / 2;
+    }
+}
+
+.btnShowMore {
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: $textMain;
+    outline: none !important;
+    border: none !important;
+
+    &:hover,
+    &:focus {
+        background-color: $textBase;
+    }
+
+    &:active {
+        background-color: #000;
+    }
+
+    p {
+        color: #fff;
+    }
+}
+
+.btnLoading {
+    p {
+        color: inherit;
     }
 }

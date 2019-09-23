@@ -49,7 +49,7 @@ class BlogComponent extends PureComponent {
             </Heading>;
 
         const caption = <Row key={1} className={window.classnames(cls.captionBlock)}>
-            <Row className={window.classnames(cls.captionItem)}>
+            {/* <Row className={window.classnames(cls.captionItem)}>
                 <div className={window.classnames(cls.captionIcon)}>
                     <FaUser />
                 </div>
@@ -58,7 +58,7 @@ class BlogComponent extends PureComponent {
                 </Caption>
             </Row>
 
-            <em className={window.classnames(cls.point)}></em>
+            <em className={window.classnames(cls.point)}></em> */}
 
             <Row className={window.classnames(cls.captionItem)}>
                 <div className={window.classnames(cls.captionIcon)}>

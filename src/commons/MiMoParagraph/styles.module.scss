@@ -1,9 +1,10 @@
 @import '~appConfig/app_vars';
 
 .Paragraph {
-    margin: 0 ;
-    font-family: $fontBodyFamily ;
-    color: $textMain ;
+    margin: 0;
+    font-family: $fontBodyFamily;
+    color: $textMain;
+    word-break: break-word;
 }
 
 .buttonStyle {
@@ -15,11 +16,11 @@
 .linkStyle {
     &:hover {
         cursor: pointer;
-        color: $textMainHover ;
+        color: $textMainHover;
     }
 
     &:active {
         cursor: pointer;
-        color: $textMainActive ;
+        color: $textMainActive;
     }
 }

@@ -12,7 +12,7 @@ body {
     font-size: $fontSizeStandard;
 
     @media screen and (max-width: $smallDevice){
-        font-size: $fontSizeSmall;
+        // font-size: $fontSizeSmall;
     }
     @media screen and (max-width: $superSmallDevice) {
         // h1,h2,h3,span,div,p{font-size: 1em!important;}

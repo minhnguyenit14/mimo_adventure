@@ -1,11 +1,21 @@
 @import '~appConfig/app_vars';
 
 .footerContainer {
-    background-color: #f3f3f3;
+    background-color: $footerColor;
     padding-top: $paddingContainer * 3;
-    padding-bottom: $paddingContainer * 3;
+    padding-bottom: $paddingContainer * 2;
     padding-left: $paddingContainer;
     padding-right: $paddingContainer;
+    max-height: fit-content;
+
+    @media screen and (max-width: $smallDevice) {
+        padding: $paddingContainer;
+    }
+}
+
+.footerWrapper {
+    @include appSize();
+    max-width: 80%;
     display: flex;
     display: -webkit-flex;
     flex-direction: row;
@@ -15,23 +25,29 @@
     max-height: min-content;
     align-items: center;
 
-    @media screen and (max-width: $smallDevice) {
+
+    @media screen and (max-width: $mobile) {
+        max-width: 100%;
         flex-direction: column;
         -webkit-flex-direction: column;
-        padding: $paddingContainer;
     }
 }
 
-.footerMenuContainer {
+.footerMenuOuter {
     display: flex;
     display: -webkit-flex;
     flex-direction: column;
     -webkit-flex-direction: column;
-    flex: .1;
-    -webkit-flex: .1;
+    flex: .4;
+    -webkit-flex: .4;
     justify-content: space-between;
+    width: 100%;
+}
 
-    @media screen and (max-width: $smallDevice) {
+.footerMenuContainer {
+    width: fit-content;
+
+    @media screen and (max-width: $mobile) {
         flex-direction: row;
         -webkit-flex-direction: row;
         width: 100%;
@@ -39,73 +55,87 @@
     }
 }
 
+.imgWrapper {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    align-self: center;
+    flex: .4;
+}
+
 .imgContainer {
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    margin-right: $marginContainer*2;
-
-    @media screen and (max-width: $smallDevice) {
-        margin: 0;
-    }
 }
 
 .menuItem {
     font-weight: $fontLightBold !important;
+    margin-bottom: $marginContainer/2;
 
-    @media screen and (max-width: $smallDevice) {
+    @media screen and (max-width: $mobile) {
         margin: $marginContainer*2 auto !important;
-        text-align: center;
     }
 
     @media screen and (max-width: $superSmallDevice) {
-        font-size: .9em!important;
+        font-size: .9em !important;
     }
 }
 
 .addressRow {
-    justify-content: space-between;
+    display: block;
 
     @media screen and (max-width: $smallDevice) {
+        justify-content: space-between;
         flex-direction: row;
         -webkit-flex-direction: row;
         margin-bottom: $marginContainer/2;
     }
 }
 
-.infoIcon {
-    margin-right: $marginContainer;
+.facebookIcon {
+    font-size: x-large;
+    margin-top: $marginContainer;
 }
 
 .infoParagraph {
     margin: 0 auto !important;
-}
-
-.companyInfoContainer {
-    flex: .35;
-    -webkit-flex: .35;
-    align-items: flex-end;
+    font-size: smaller;
+    margin-bottom: $marginContainer !important;
+    flex: .4;
 
     @media screen and (max-width: $smallDevice) {
-        align-items: center;
+        flex: unset;
     }
 }
 
 .companyInfo {
-    align-items: flex-end;
-    margin-top: $marginContainer;
+    display: flex;
+    justify-content: flex-end;
+    flex: .4;
+    -webkit-flex: .4;
+
+    @media screen and (max-width: $smallDevice) {
+        max-width: 400px;
+    }
+}
+
+.infoTitle {
+    font-weight: $fontBold;
+    font-family: $fontHeadingFamily;
+}
+
+.phone {
+    @media screen and (max-width: $smallDevice) {
+        float: left;
+        margin-right: $marginContainer * 2;
+    }
 }
 
 .copyright {
-    flex: .55;
-    -webkit-flex: .55;
-    display: flex;
-    display: -webkit-flex;
-    justify-content: flex-end;
-    align-items: center;
-
-    @media screen and (max-width: $smallDevice) {
-        justify-content: center;
-        margin-top: $marginContainer*2;
-    }
+    margin: auto;
+    text-align: center;
+    margin-top: $marginContainer*2;
 }

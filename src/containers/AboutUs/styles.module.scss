@@ -1,0 +1,60 @@
+@import '~appConfig/app_vars';
+
+.bodyRoot {
+    @include flexCenter;
+    margin-top: $headerHeight;
+    padding: $paddingContainer*3;
+
+    @media screen and (max-width: $smallDevice) {
+        padding: $paddingContainer;
+        margin-top: $headerMobileHeight;
+    }
+
+    background-color: $bg;
+}
+
+.content {
+    p {
+        line-height: 200%;
+        text-align: justify;
+    }
+
+    max-width: $smallDevice;
+    margin: $marginContainer*2 auto;
+}
+
+.tableContainer {
+    @media screen and (max-width: $smallDevice) {
+        padding: $paddingContainer;
+        max-width: 100vw;
+        margin-left: -$paddingContainer;
+        margin-right: -$paddingContainer;
+    }
+}
+
+.tableWrapper {
+    overflow: auto;
+
+}
+
+.table {
+    margin-top: $marginContainer;
+
+    @media screen and (max-width: $smallDevice) {
+        max-width: 100vw;
+        overflow: auto;
+    }
+
+    p {
+        text-align: center;
+    }
+
+    table,
+    td,
+    th {
+        border: 1px solid $borderColorDarker;
+        border-collapse: collapse;
+        padding: $paddingContainer;
+        text-align: center;
+    }
+}

@@ -39,7 +39,7 @@ export const getProducts = (url, whereClause, indexPage, rows, callbackSuccess, 
     }
 }
 
-export const showMoreProduct = (url, whereClause, indexPage, rows, callbackSuccess, method = "get") => {
+export const showMoreProduct = (url, whereClause, indexPage, rows, callbackSuccess, method = "post") => {
     return dispatch => {
         dispatch(queryExecutor(url, whereClause, indexPage, rows, setShowMoreStatus, callbackSuccess, method));
     }

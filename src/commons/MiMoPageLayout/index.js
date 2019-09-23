@@ -7,13 +7,15 @@ import cls from './styles.module.scss';
 
 class MiMoPageLayout extends PureComponent {
     state = {};
-    
-    componentDidUpdate() {
-        console.log('layout')
 
+    componentDidUpdate() {
+        // console.log('layout')
     }
     componentDidMount() {
-        this.timeout = setTimeout(() => window.scrollTo({ top: 0 }));
+        this.timeout = setTimeout(() => window.scrollTo({ top: 0 }), 300);
+    }
+    componentWillUnmount() {
+        clearTimeout(this.setTimeout);
     }
 
     render() {

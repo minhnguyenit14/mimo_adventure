@@ -6,7 +6,7 @@ import { isMobileOnly } from 'react-device-detect';
 import styles from 'app-config/app_vars.scss';
 import { FaAlignJustify, FaSearch } from 'react-icons/fa';
 import { MENU, PATH, GET_ALL_PRODUCT_CATEGORIES, MENU_PRODUCT_ID, MENU_HOME_ID, MENU_ABOUT_US_ID, MENU_CONTACT_ID, MENU_BLOG_ID } from 'app-constants';
-import { getStorage, setStorage, formatMenuFromApi, willUpdateState, getSelectedKey } from 'app-helpers';
+import { getStorage, setStorage, formatMenuFromApi, willUpdateState, getSelectedKey, scrollToBody } from 'app-helpers';
 import { connect } from 'react-redux';
 import { setSelectedMenuKeys, setSmartPath } from 'app-redux/actions/menu';
 import { setSearchValue } from 'app-redux/actions/search';
@@ -110,7 +110,7 @@ class Header extends Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        console.log('header')
+        // console.log('header')
     }
 
     determineSelectedMenuKeys(menu, props) {
@@ -124,16 +124,32 @@ class Header extends Component {
 
         if (!selectedKey) {
             let { pathname } = props.location;
+            if (pathname.includes(PATH.PRODUCT)) {
+                selectedKey = MENU[1].key
+            }
+        }
+
+        if (!selectedKey) {
+            let { pathname } = props.location;
             menu.forEach(item => {
                 if (pathname.includes(item.seoTitle)) {
-                    selectedKey = item.key
+                    if (item.seoTitle === MENU[0].seoTitle) {
+                        if (pathname === item.seoTitle) {
+                            selectedKey = item.key;
+                        } else {
+                            selectedKey = null;
+                            props.setSelectedMenuKeys([""]);
+                        }
+                    } else {
+                        selectedKey = item.key
+                    }
                 }
             })
         }
 
         if (selectedKey) {
             props.setSelectedMenuKeys([selectedKey]);
-        } 
+        }
     }
 
     updateProductCategoriesOfMenu = (menu, productCategories) => {
@@ -188,6 +204,7 @@ class Header extends Component {
                 break;
             case MENU_PRODUCT_ID:
                 this.props.history.push(PATH.LIST_PRODUCTS);
+                scrollToBody(500);
                 break;
             case MENU_BLOG_ID:
                 this.props.history.push(PATH.BLOG);
@@ -200,6 +217,7 @@ class Header extends Component {
                 break;
             default:
                 this.props.history.push(`${PATH.LIST_PRODUCTS}/${item.seoTitle}`);
+                scrollToBody(500);
                 break;
         }
     }
@@ -292,7 +310,10 @@ class Header extends Component {
                         search
                         value={searchValue}
                         onSearch={this.onSearch}
-                        onChange={this.onChangeSearch} />}
+                        onChange={this.onChangeSearch}
+                        placeholder="Tìm kiếm..."
+                    />
+                }
             </Container>;
         return (
             <Fragment>
@@ -308,19 +329,24 @@ class Header extends Component {
                                 value={searchValue}
                                 onChange={this.onChangeSearch}
                                 onSearch={this.onSearch}
+                                placeholder="Tìm kiếm..."
                             />
                         </div>
                     }
-                    <Row className={window.classnames(cls.headerContainer)} {...headerProps}>
-                        {!isMenuCollapsable && image}
-                        {!isMenuCollapsable ? menuJSX : collapseMenuButton}
-                        {isMenuCollapsable && image}
-                        {searchBar}
-                    </Row>
+                    <div className={window.classnames(cls.headerOuter)}>
+                        <Row className={window.classnames(cls.headerContainer)} {...headerProps}>
+                            {!isMenuCollapsable && image}
+                            {!isMenuCollapsable ? menuJSX : collapseMenuButton}
+                            {isMenuCollapsable && image}
+                            {searchBar}
+                        </Row>
+                    </div>
                     {isMenuCollapsable && menuJSX}
                 </Container >
                 {slidesData.length !== 0 && <div className={window.classnames(cls.slider)}>
-                    <Slider data={slidesData} />
+                    <div id={'sliderHeader'}>
+                        <Slider data={slidesData} />
+                    </div>
                 </div>}
             </Fragment>
         );

@@ -8,7 +8,7 @@ class NotFound extends Component {
 
     componentWillMount() {
         if (window.location.pathname !== PATH.NOT_FOUND) {
-            this.props.history.replace(PATH.NOT_FOUND);
+            // this.props.history.replace(PATH.NOT_FOUND);
         }
     }
 

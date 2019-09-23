@@ -1,12 +1,23 @@
 import React, { Component } from 'react';
-import { Image, PageLayout, Row, Card, Heading, Col, Paragraph } from 'app-commons';
+import { Image, PageLayout, Row, Card, Heading, Col, Paragraph, Container, Loading } from 'app-commons';
 import cls from './styles.module.scss';
-import { PATH, GET_HOME_BANNER, GET_PINNED_PRODUCT } from 'app-constants';
+import { PATH, GET_HOME_BANNER, GET_PINNED_PRODUCT, MENU } from 'app-constants';
 import { ADMIN_URL_KEY, BANNER_PATH_KEY, PRODUCT_THUMBNAIL_PATH_KEY } from 'app-config/network';
-import { getStorage, setStorage, willUpdateState, addUrlToImages } from 'app-helpers';
+import { getStorage, setStorage, willUpdateState, addUrlToImages, correctSEOTitle } from 'app-helpers';
+import { connect } from 'react-redux';
+import { setSelectedMenuKeys } from 'app-redux/actions/menu';
+
+const connector = connect(
+    null,
+    dispatch => ({
+        setSelectedMenuKeys: (selectedMenuKeys) =>
+            dispatch(setSelectedMenuKeys(selectedMenuKeys))
+    })
+)
 
 class Home extends Component {
     state = {
+        pinnedLoading: false,
         slidesData: [],
         pinnedProducts: []
     };
@@ -48,12 +59,17 @@ class Home extends Component {
     }
 
     createSlidesData(banners) {
-        return banners.map(banner => <Image
-            key={banner.BannerID}
-            className={window.classnames(cls.bannerImage)}
-            src={banner.BannerImage}
-            onClick={() => window.open(banner.BannerLink, '_blank')}
-        />
+        return banners.map(banner =>
+            <div
+                key={banner.BannerID}
+                className={window.classnames(cls.bannerImageWrapper)}
+            >
+                <div
+                    className={window.classnames(cls.bannerImage)}
+                    style={{ backgroundImage: `url(${banner.BannerImage})` }}
+                    onClick={() => window.open(banner.BannerLink, '_blank')}
+                ></div>
+            </div>
         )
     }
 
@@ -75,6 +91,9 @@ class Home extends Component {
     }
 
     getPinnedProduct() {
+        this.setState({
+            pinnedLoading: true
+        })
         return window.get(GET_PINNED_PRODUCT).then(
             res => {
                 const pinnedProducts = addUrlToImages(
@@ -82,17 +101,30 @@ class Home extends Component {
                     `${res[ADMIN_URL_KEY]}${res[PRODUCT_THUMBNAIL_PATH_KEY]}`,
                     'ProductThumbnail'
                 );
+                willUpdateState(
+                    () => this.setState({
+                        pinnedLoading: false
+                    }),
+                    this.unmounted
+                );
                 return pinnedProducts;
             }
         ).catch(
             err => {
+                willUpdateState(
+                    () => this.setState({
+                        pinnedLoading: false
+                    }),
+                    this.unmounted
+                );
                 console.log('getBanner', err);
             }
         )
     }
 
     onProductClick = (seoTitle, id) => {
-        this.props.history.push(`${PATH.PRODUCT}/${seoTitle}_${id}`);
+        this.props.setSelectedMenuKeys([MENU[1].key]);
+        this.props.history.push(`${PATH.PRODUCT}/${correctSEOTitle(seoTitle)}_${id}`);
     }
 
     render() {
@@ -101,22 +133,32 @@ class Home extends Component {
                 bodyClassName={window.classnames(cls.bodyRoot)}
                 slidesData={this.state.slidesData}
             >
+
                 <Col className={window.classnames(cls.bodyContainer)}>
-                    <Heading center className={window.classnames(cls.featuredTitle)}>
-                        Sản phẩm nổi bật
+                    <div className={window.classnames(cls.bodySize)}>
+
+                        <Heading center className={window.classnames(cls.featuredTitle)}>
+                            Sản phẩm nổi bật
                     </Heading>
-                    <Row className={window.classnames(cls.cardContainer)}>
-                        {this.state.pinnedProducts.map(product => <Card
-                            className={window.classnames(cls.card)}
-                            contentClassName={window.classnames(cls.cardContent)}
-                            title={product.ProductName}
-                            src={product.ProductThumbnail}
-                            subTitle={product.ProductCategoryName}
-                            key={product.ProductID}
-                            id={product.ProductID}
-                            onClick={(id) => this.onProductClick(product.ProductSEOTitle, id)}
-                        />)}
-                    </Row>
+                        <Row className={window.classnames(cls.cardContainer)}>
+                            {this.state.pinnedLoading
+                                ? (
+                                    <Container>
+                                        <Loading />
+                                    </Container>
+                                )
+                                : this.state.pinnedProducts.map(product => <Card
+                                    className={window.classnames(cls.card)}
+                                    contentClassName={window.classnames(cls.cardContent)}
+                                    title={product.ProductName}
+                                    src={product.ProductThumbnail}
+                                    subTitle={product.ProductCategoryName}
+                                    key={product.ProductID}
+                                    id={product.ProductID}
+                                    onClick={(id) => this.onProductClick(product.ProductSEOTitle, id)}
+                                />)}
+                        </Row>
+                    </div>
                 </Col>
                 <Row className={window.classnames(cls.parallax)}>
                     <Paragraph className={window.classnames(cls.quote)}>
@@ -128,4 +170,4 @@ class Home extends Component {
     }
 }
 
-export default Home;
+export default connector(Home);
