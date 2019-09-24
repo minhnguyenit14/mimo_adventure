@@ -1,7 +1,7 @@
 @import '~appConfig/app_vars';
 
 @mixin companyInfo {
-    // font-size: 1.2rem !important;
+    font-size: 1.1rem;
 }
 
 .bodyRoot {
@@ -10,7 +10,7 @@
 
     @media screen and (max-width: $smallDevice) {
         margin-top: $headerMobileHeight;
-        padding: $paddingContainer*3 !important;
+        padding: $paddingContainer*3;
     }
 
     background-color: $bg;

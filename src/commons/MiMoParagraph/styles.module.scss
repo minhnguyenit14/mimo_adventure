@@ -1,6 +1,7 @@
 @import '~appConfig/app_vars';
 
-.Paragraph {
+.Paragraph,
+p {
     margin: 0;
     font-family: $fontBodyFamily;
     color: $textMain;

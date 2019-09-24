@@ -9,6 +9,60 @@ import {
     PRODUCT_THUMBNAIL_PATH_KEY,
     IMAGE_PATH_KEY
 } from 'app-config/network';
+import { POST_HOME_INCREASE_VIEW } from 'constants/api';
+import { setStorage, getStorage } from './cacheHelper';
+
+let setIncreaseViewInterval = null;
+let isPosting = false;
+const delayTime = 5 * 60 * 1000;
+
+axios.interceptors.request.use(function (config) {
+    let storage = getStorage();
+    if (storage) {
+        const { isIncreaseView } = storage;
+        if (isIncreaseView === false) {
+            clearInterval(setIncreaseViewInterval);
+            setIncreaseViewInterval = setInterval(function () {
+                if (process.env.NODE_ENV === 'development') {
+                    console.log('done increase interval');
+                }
+                storage = getStorage();
+                setStorage({ ...storage, isIncreaseView: true });
+                clearInterval(setIncreaseViewInterval);
+            }, delayTime);
+        } else if (isIncreaseView === undefined) {
+            if (!isPosting) {
+                isPosting = true;
+                post(POST_HOME_INCREASE_VIEW).then(res => {
+                    if (process.env.NODE_ENV === 'development') {
+                        console.log(res);
+                    }
+                    storage = getStorage();
+                    isPosting = false;
+                    setStorage({ ...storage, isIncreaseView: false });
+                });
+            }
+        } else if (isIncreaseView) {
+            if (!isPosting) {
+                isPosting = true;
+                post(POST_HOME_INCREASE_VIEW).then(res => {
+                    if (process.env.NODE_ENV === 'development') {
+                        console.log(res);
+                    }
+                    storage = getStorage();
+                    isPosting = false;
+                    setStorage({ ...storage, isIncreaseView: false });
+                });
+            }
+        }
+    }
+    return config;
+}, function (error) {
+    if (process.env.NODE_ENV === 'development') {
+        console.log(error);
+    }
+    return Promise.reject(error);
+});
 
 export const getConfig = () => {
     return axios.get(CONFIG_PATH).then(
@@ -31,8 +85,10 @@ export const post = (url, body) => {
                 IMAGE_PATH
             } = res.data;
             url = url.replace(BACKEND_URL_AKA, BACKEND_URL);
-            console.log('url', String(url));
-            console.log('body', body);
+            if (process.env.NODE_ENV === 'development') {
+                console.log('url', String(url));
+                console.log('body', body);
+            }
             return axios(url, {
                 method: "post",
                 headers: {

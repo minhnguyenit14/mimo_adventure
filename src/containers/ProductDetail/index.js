@@ -3,7 +3,7 @@ import { PageLayout, Row, Col, Heading, Paragraph, Gallery } from 'app-commons';
 import cls from './styles.module.scss';
 import { PATH, GET_DETAIL_PRODUCT, ID_AKA } from 'app-constants';
 import { addUrlToImages, toMoneyFormat, addImagesURLToHtmlContent, correctSEOTitle } from 'app-helpers';
-import { PRODUCT_PATH_KEY, ADMIN_URL_KEY, PRODUCT_THUMBNAIL_PATH_KEY } from 'app-config/network';
+import { PRODUCT_PATH_KEY, ADMIN_URL_KEY, PRODUCT_THUMBNAIL_PATH_KEY, IMAGE_PATH_KEY } from 'app-config/network';
 import renderHtml from 'react-render-html';
 import { isMobileOnly, isMobile } from 'react-device-detect';
 import {
@@ -50,7 +50,11 @@ class ProductDetail extends Component {
                 )[0];
                 product.ProductSEOTitle = correctSEOTitle(product.ProductSEOTitle);
                 product.ProductPrice = toMoneyFormat(product.ProductPrice);
-                product.ProductDescription = addImagesURLToHtmlContent(product.ProductDescription);
+                product.ProductDescription = addImagesURLToHtmlContent(
+                    product.ProductDescription,
+                    res[ADMIN_URL_KEY],
+                    res[IMAGE_PATH_KEY]
+                );
                 this.setState({
                     product
                 })

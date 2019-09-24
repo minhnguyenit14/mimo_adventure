@@ -134,6 +134,8 @@
     background-color: $bg;
     font-size: $fontSizeStandard;
     white-space: initial;
+    max-width: $largeDevice;
+    margin: auto;
 
     img {
         max-width: 100%;
@@ -178,7 +180,7 @@
     margin-top: $marginContainer*3;
     background: #4167b2;
     padding-top: 2.5px;
-    padding-left: 20px;    
+    padding-left: 20px;
     padding-right: 8px;
     padding-bottom: 2.5px;
     height: 25px;
