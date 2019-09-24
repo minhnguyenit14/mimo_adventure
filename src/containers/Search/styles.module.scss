@@ -4,10 +4,6 @@
     margin-top: $marginContainer * 4;
     padding-bottom: $paddingContainer * 2;
     border-bottom: 1px dashed $borderColor;
-
-    @media screen and (max-width: $smallDevice) {
-        margin-top: $marginContainer * 3;
-    }
 }
 
 .searchProductGrid {

@@ -58,7 +58,7 @@ class Footer extends PureComponent {
         willUpdateState(
             () => this.setState({ isChangeLayout: this.isMobileDevice() }),
             this.unmounted
-        );        
+        );
     }
 
     getCompanyInfo() {
@@ -84,10 +84,10 @@ class Footer extends PureComponent {
         const companyInfoNode = <div key={0} className={window.classnames(cls.companyInfo)}>
             <div>
                 <Row className={window.classnames(cls.addressRow)}>
-                    <Paragraph className={window.classnames(cls.infoTitle)}>Địa chỉ:</Paragraph>
+                    <Paragraph className={window.classnames(cls.infoTitle)}>Địa chỉ phân phối:</Paragraph>
 
                     <Paragraph className={window.classnames(cls.infoParagraph)}>
-                        {companyInfo.CompanyHeadOffice}
+                        {companyInfo && companyInfo.CompanyShowRoom}
                     </Paragraph>
                 </Row>
                 <Row className={window.classnames(cls.addressRow, cls.phone)}>
@@ -96,14 +96,14 @@ class Footer extends PureComponent {
                     </div>
 
                     <Paragraph className={window.classnames(cls.infoParagraph)}>
-                        {companyInfo.CompanyPhone}
+                        {companyInfo && companyInfo.CompanyPhone}
                     </Paragraph>
                 </Row>
                 <Row className={window.classnames(cls.addressRow)}>
                     <Paragraph className={window.classnames(cls.infoTitle)}>Fax:</Paragraph>
 
                     <Paragraph className={window.classnames(cls.infoParagraph)}>
-                        {companyInfo.CompanyFax}
+                        {companyInfo && companyInfo.CompanyFax}
                     </Paragraph>
                 </Row>
             </div>
@@ -117,7 +117,7 @@ class Footer extends PureComponent {
             <Row className={window.classnames(cls.addressRow)}>
                 <Link
                     className={window.classnames(cls.infoParagraph)}
-                    href={`${companyInfo.CompanyFacebook}`}
+                    href={`${companyInfo && companyInfo.CompanyFacebook}`}
                     target='_blank'
                     rel="noopener noreferrer"
                 >
@@ -157,7 +157,7 @@ class Footer extends PureComponent {
                 <div className={window.classnames(cls.copyright)}>
                     <Paragraph>
                         © 2019 An Nguyen
-                        </Paragraph>
+                    </Paragraph>
                 </div>
             </Container >
         );

@@ -59,7 +59,10 @@ class MiMoMenu extends Component {
         const heading = <Heading
             type={level === 0 ? 2 : 3}
             className={window.classnames(cls.menuItem)}
-            onClick={() => this.hanldeMenuClick(menuItem, true, false)}
+            onClick={(e) => {
+                e.stopPropagation();
+                this.hanldeMenuClick(menuItem, true, false);
+            }}
         >
             {menuItem.title}
         </Heading>;

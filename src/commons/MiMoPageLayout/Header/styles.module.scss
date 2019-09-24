@@ -85,6 +85,9 @@ $bgHeader: #fff;
     -webkit-transform: translateY(-150%);
     -webkit-transition: $transition;
     transition: $transition;
+    input[type="text"], select:focus{
+        font-size: 16px!important;
+    }
 }
 
 .showSearchBar {

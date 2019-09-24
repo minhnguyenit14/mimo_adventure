@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { PageLayout, Heading, Paragraph, Link, Row } from 'app-commons';
+import { PageLayout, Heading, Paragraph, Link, Row, Col } from 'app-commons';
 import cls from './styles.module.scss';
 import { FaPhone, FaFax } from 'react-icons/fa'
 import { getStorage } from 'app-helpers';
@@ -47,22 +47,40 @@ class Contact extends Component {
                 <Paragraph className={window.classnames(cls.companyName)}>
                     {companyInfo.CompanyName}
                 </Paragraph>
-                <Paragraph className={window.classnames(cls.companyHeadOffice)}>
-                    {companyInfo.CompanyHeadOffice}
-                </Paragraph>
-                <Row className={window.classnames(cls.phoneFax)}>
-                    <Paragraph className={window.classnames(cls.companyPhone)}>
-                        <FaPhone className={window.classnames(cls.phoneIcon)} />
-                        {companyInfo.CompanyPhone}
-                    </Paragraph>
-                    <Paragraph className={window.classnames(cls.companyFax)}>
-                        <FaFax className={window.classnames(cls.faxIcon)} />
-                        {companyInfo.CompanyFax}
-                    </Paragraph>
+                <Row>
+                    <Col className={window.classnames(cls.block)}>
+                        <Heading type={3} className={window.classnames(cls.titleOffice)}>Trụ sở</Heading>
+                        <Paragraph className={window.classnames(cls.companyHeadOffice)}>
+                            {companyInfo.CompanyHeadOffice}
+                        </Paragraph>
+                    </Col>
+                    <Col className={window.classnames(cls.block)}>
+                        <Heading type={3} className={window.classnames(cls.titleOffice)}>Địa chỉ phân phối</Heading>
+                        <Paragraph className={window.classnames(cls.companyHeadOffice)}>
+                            {companyInfo.CompanyShowRoom}
+                        </Paragraph>
+                    </Col>
+                    <Col className={window.classnames(cls.block)}>
+                        <Heading type={3} className={window.classnames(cls.titleOffice)}>Liên hệ</Heading>
+
+                        <Link
+                            className={window.classnames(cls.companyFb)}
+                            href={companyInfo.CompanyFacebook}
+                            target='_blank'
+                            rel="noopener noreferrer"
+                        >
+                            {companyInfo.CompanyName}
+                        </Link>
+                        <Paragraph className={window.classnames(cls.companyPhone)}>
+                            <FaPhone className={window.classnames(cls.phoneIcon)} />
+                            {companyInfo.CompanyPhone}
+                        </Paragraph>
+                        <Paragraph className={window.classnames(cls.companyFax)}>
+                            <FaFax className={window.classnames(cls.faxIcon)} />
+                            {companyInfo.CompanyFax}
+                        </Paragraph>
+                    </Col>
                 </Row>
-                <Link className={window.classnames(cls.companyFb)}>
-                    {companyInfo.CompanyName}
-                </Link>
             </PageLayout>
         );
     }

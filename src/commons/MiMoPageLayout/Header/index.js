@@ -308,6 +308,7 @@ class Header extends Component {
                     : <Input
                         className={window.classnames(cls.searchLaptop)}
                         search
+                        allowClear 
                         value={searchValue}
                         onSearch={this.onSearch}
                         onChange={this.onChangeSearch}
@@ -326,6 +327,7 @@ class Header extends Component {
                             )}>
                             <Input
                                 search
+                                allowClear 
                                 value={searchValue}
                                 onChange={this.onChangeSearch}
                                 onSearch={this.onSearch}

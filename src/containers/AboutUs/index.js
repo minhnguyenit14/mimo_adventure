@@ -74,25 +74,29 @@ class AboutUs extends PureComponent {
                     </Heading>
 
                         <Paragraph>
-                            1.	Tên thương hiệu: <strong>{companyInfo.CompanyName}</strong>
+                            1.	Tên thương hiệu: &nbsp;<strong>{companyInfo.CompanyName}</strong>
                         </Paragraph>
 
                         <Paragraph>
-                            2.	Đăng ký lần đầu: 13/12/2018
+                            2.	Đăng ký lần đầu: &nbsp;13/12/2018
                     </Paragraph>
 
                         <Paragraph>
-                            3.	Địa chỉ: {companyInfo && companyInfo.CompanyHeadOffice}
+                            3.	Trụ sở: &nbsp;{companyInfo && companyInfo.CompanyHeadOffice}
                         </Paragraph>
 
                         <Paragraph>
-                            4.	Hotline: {companyInfo && companyInfo.CompanyPhone}
+                            4. Địa chỉ phân phối: &nbsp;{companyInfo && companyInfo.CompanyShowRoom}
                         </Paragraph>
 
                         <Paragraph>
-                            5.	Facebook: {companyInfo && <Link
+                            5.	Hotline: &nbsp;{companyInfo && companyInfo.CompanyPhone}
+                        </Paragraph>
+
+                        <Paragraph>
+                            6.	Facebook: &nbsp;{companyInfo && <Link
                                 className={window.classnames(cls.infoParagraph)}
-                                href={`https://${companyInfo.CompanyFacebook}`}
+                                href={companyInfo.CompanyFacebook}
                                 target='_blank'
                                 rel="noopener noreferrer"
                             >
