@@ -23,6 +23,11 @@
     margin: $marginContainer*2 auto;
 }
 
+.alignLeft {
+    text-align: start !important;
+    margin-left: 17px;
+}
+
 .tableContainer {
     @media screen and (max-width: $smallDevice) {
         padding: $paddingContainer;

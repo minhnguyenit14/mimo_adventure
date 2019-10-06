@@ -106,14 +106,14 @@
 
 .featuredTitle {
     padding-top: $paddingContainer * 2;
-    margin-bottom: $paddingContainer * 2;
+    margin-bottom: $paddingContainer * 4;
     text-transform: uppercase;
     letter-spacing: 1.5px;
 
     @media screen and (max-width: $smallDevice) {
         padding-top: $paddingContainer;
         margin-top: $paddingContainer/2;
-
+        margin-bottom: $paddingContainer * 2;
     }
 }
 
