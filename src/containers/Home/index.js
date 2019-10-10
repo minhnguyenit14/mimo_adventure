@@ -22,6 +22,8 @@ class Home extends Component {
         pinnedProducts: []
     };
     unmounted = false;
+    refBody = React.createRef();
+    cardAnimationTimeOut = null;
 
     componentDidMount() {
         let cache = getStorage();
@@ -49,13 +51,16 @@ class Home extends Component {
         );
         this.getPinnedProduct().then(
             pinnedProducts => {
-                this.setState({ pinnedProducts })
+                pinnedProducts.push(pinnedProducts[0]);
+                pinnedProducts.push(pinnedProducts[1]);
+                this.setState({ pinnedProducts });
             }
         );
     }
 
     componentWillUnmount() {
         this.unmounted = true;
+        clearTimeout(this.cardAnimationTimeOut);
     }
 
     createSlidesData(banners) {
@@ -127,6 +132,151 @@ class Home extends Component {
         this.props.history.push(`${PATH.PRODUCT}/${correctSEOTitle(seoTitle)}_${id}`);
     }
 
+    setUpPosition(e, ref) {
+        e.preventDefault();
+        e.stopPropagation();
+        clearTimeout(this.cardAnimationShowOffTimeOut);
+        this.cardAnimationShowOffTimeOut = setTimeout(() => {
+            if (ref) {
+                // if (e.target === e.currentTarget && ref.style.position === "") {
+                const parent = ref.parentElement;
+                if (parent) {
+                    const { width: pW, height: pH } = parent.getBoundingClientRect();
+                    parent.style.width = `${pW}px`;
+                    parent.style.height = `${pH}px`;
+                }
+                ref.style.position = 'absolute';
+                ref.style.maxHeight = 'inherit';
+                ref.style.zIndex = '9';
+
+                const child1 = ref.firstElementChild;
+                if (child1) {
+                    const child2 = child1.firstElementChild;
+                    if (child2) {
+                        child2.style.height = `${ref.getBoundingClientRect().height}px`;
+                        const child3 = child1.lastElementChild;
+                        if (child3 && parent) {
+                            ref.style.height = `${parent.getBoundingClientRect().height + child3.getBoundingClientRect().height}px`;
+                        }
+                    }
+                };
+                // }
+            }
+        }, 300);
+    }
+
+    removePosition(e, ref) {
+        e.preventDefault();
+        e.stopPropagation();
+        clearTimeout(this.cardAnimationShowOffTimeOut);
+        if (ref) {
+            // if (e.target === e.currentTarget && ref.style.position !== "") {
+            ref.style.maxHeight = '';
+            ref.style.height = '';
+            ref.style.zIndex = '';
+            const child1 = ref.firstElementChild;
+            let child2 = null;
+            if (child1) {
+                child2 = child1.firstElementChild;
+                child2.style = '';
+            };
+
+            this.cardAnimationTimeOut = setTimeout(() => {
+                // if (ref.getBoundingClientRect().height === originHeight) {
+                const parent = ref.parentElement;
+                if (parent) {
+                    parent.style = '';
+                }
+
+                ref.style = '';
+                // }
+            }, 200);
+
+            // }
+        }
+    }
+
+    renderPinnedProduct() {
+        const pinnedProducts = [];
+        let temp = [];
+        let temp2 = [];
+
+        this.state.pinnedProducts.map((product, index) => {
+            temp.push(<div
+                key={product.ProductID}
+                className={window.classnames(cls.cardWrapper)}
+            >
+                <Card
+                    onMouseOver={(e) => { this.setUpPosition(e, e.target) }}
+                    onMouseLeave={(e) => { this.removePosition(e, e.target) }}
+                    className={[window.classnames(
+                        cls.card,
+                        (index === 1
+                            || index === 2
+                            || index === 3
+                            || index === 6
+                        ) && cls.a
+                    ), 'card_wrapper'].join(' ')}
+                    contentClassName={window.classnames(cls.cardContent)}
+                    title={product.ProductName}
+                    src={product.ProductThumbnail}
+                    subTitle={product.ProductCategoryName}
+                    id={product.ProductID}
+                    onClick={(id) => this.onProductClick(product.ProductSEOTitle, id)}
+                /></div>)
+            switch (index) {
+                case 0:
+                    temp2.push(<Row className={window.classnames(cls.item1, cls.noPos)} key={index}>
+                        {temp}
+                    </Row>);
+                    temp = [];
+                    break;
+                case 2:
+                    temp2.push(
+                        <Row className={window.classnames(cls.item2, cls.noPos)} key={index}>
+                            {temp}
+                        </Row>
+                    );
+                    pinnedProducts.push(<Col className={window.classnames(cls.noPos)} key={index}>
+                        {temp2}
+                    </Col>)
+                    temp = [];
+                    temp2 = [];
+                    break;
+                case 4:
+                    temp2.push(
+                        <Col className={window.classnames(cls.item3, cls.noPos)} key={index}>
+                            {temp}
+                        </Col>
+                    );
+                    pinnedProducts.push(temp2)
+                    temp = [];
+                    temp2 = [];
+                    break;
+                case 5:
+                    temp2.push(<Row className={window.classnames(cls.item4, cls.noPos)} key={index}>
+                        {temp}
+                    </Row>);
+                    temp = [];
+                    break;
+                case 7:
+                    temp2.push(
+                        <Row className={window.classnames(cls.item5, cls.noPos)} key={index}>
+                            {temp}
+                        </Row>
+                    );
+                    pinnedProducts.push(<Col className={window.classnames(cls.noPos)} key={index}>
+                        {temp2}
+                    </Col>)
+                    temp = [];
+                    temp2 = [];
+                    break;
+            }
+
+        })
+        return <Row>{pinnedProducts}</Row>;
+    }
+
     render() {
         return (
             <PageLayout
@@ -135,7 +285,7 @@ class Home extends Component {
             >
 
                 <Col className={window.classnames(cls.bodyContainer)}>
-                    <div className={window.classnames(cls.bodySize)}>
+                    <div ref={this.refBody} className={window.classnames(cls.bodySize)}>
 
                         <Heading center className={window.classnames(cls.featuredTitle)}>
                             Sản phẩm nổi bật
@@ -147,16 +297,7 @@ class Home extends Component {
                                         <Loading />
                                     </Container>
                                 )
-                                : this.state.pinnedProducts.map(product => <Card
-                                    className={window.classnames(cls.card)}
-                                    contentClassName={window.classnames(cls.cardContent)}
-                                    title={product.ProductName}
-                                    src={product.ProductThumbnail}
-                                    subTitle={product.ProductCategoryName}
-                                    key={product.ProductID}
-                                    id={product.ProductID}
-                                    onClick={(id) => this.onProductClick(product.ProductSEOTitle, id)}
-                                />)}
+                                : this.renderPinnedProduct()}
                         </Row>
                     </div>
                 </Col>

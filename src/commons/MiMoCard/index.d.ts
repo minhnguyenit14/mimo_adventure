@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import { MiMoContainerProps } from 'app-commons/MiMoContainer';
+import { MiMoContainerProps } from 'commons/MiMoContainer';
 
 export declare type MiMoCardProps = {
     title?: String,

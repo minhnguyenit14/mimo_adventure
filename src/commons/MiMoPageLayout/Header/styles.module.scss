@@ -49,7 +49,7 @@ $bgHeader: #fff;
     padding: 0 $paddingContainer 0 $paddingContainer;
     flex-direction: row !important;
     -webkit-flex-direction: row !important;
-    
+
     top: 0;
     height: $headerHeight;
 
@@ -85,8 +85,10 @@ $bgHeader: #fff;
     -webkit-transform: translateY(-150%);
     -webkit-transition: $transition;
     transition: $transition;
-    input[type="text"], select:focus{
-        font-size: 16px!important;
+
+    input[type="text"],
+    select:focus {
+        font-size: 16px !important;
     }
 }
 
@@ -110,6 +112,10 @@ $bgHeader: #fff;
 
     &:hover {
         cursor: pointer;
+    }
+
+    @media screen and (max-width: $largeDevice) {
+        margin-right: $marginContainer;
     }
 
     @media screen and (max-width: $smallDevice) {

@@ -18,10 +18,15 @@
 }
 
 .textContainer {
-    margin-top: $marginContainer;
+    padding-top: $marginContainer;
     padding-left: $paddingContainer;
     padding-right: $paddingContainer;
     text-align: center;
+
+    @media screen and (max-width: $smallDevice) {
+        padding-left: $paddingContainer/2;
+        padding-right: $paddingContainer/2;
+    }
 }
 
 .caption {
@@ -38,6 +43,7 @@
 
 .heading {
     word-break: break-word;
+
     @media screen and (max-width: $smallDevice) {
         width: 100%;
     }

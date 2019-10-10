@@ -1,4 +1,10 @@
 @import '~appConfig/app_vars';
+$cardWidth: 18vw;
+$minCardWidth: 100px;
+$maxCardWidth: 400px;
+$cardHeight: $cardWidth*.75;
+$minCardHeight: $minCardWidth*.75;
+$maxCardHeight: $maxCardWidth*.75;
 
 .bodyRoot {
     padding: 0;
@@ -9,9 +15,12 @@
     background-color: $bg;
     padding-left: $paddingContainer;
     padding-right: $paddingContainer;
+    padding-bottom: $paddingContainer * 5;
 
     @media screen and(max-width: $smallDevice) {
         padding: 0;
+        padding-bottom: $paddingContainer * 5;
+
     }
 }
 
@@ -26,6 +35,12 @@
     position: relative;
     min-height: $superSmallDevice;
     max-height: $largeDevice;
+
+    @media screen and (max-width: $largeDevice) {
+        min-height: $superSmallDevice*.7;
+        max-height: $largeDevice;
+        height: 60vh;
+    }
 
     @media screen and (max-width: $superSmallDevice) {
         min-height: $superSmallDevice*.7;
@@ -43,7 +58,7 @@
     height: 100%;
     overflow: hidden;
     position: absolute;
-    top: 0;
+    top: 10px;
     right: 0;
     z-index: 1;
 }
@@ -79,6 +94,7 @@
     display: flex;
     padding-left: 3.8vw;
     padding-right: 3.8vw;
+    justify-content: center;
 
     @media screen and(max-width: $smallDevice) {
         justify-content: space-between;
@@ -89,36 +105,303 @@
     }
 }
 
-.card {
-    max-width: 26%;
-    margin: 0 auto;
-    margin-bottom: $marginContainer * 3;
-    align-self: flex-start;
+$cardBg: #fff;
+$cardBorder: 3px solid #000;
 
-    @media only screen and (max-width: $underMobile) {
-        width: 50% !important;
-        margin: unset;
-        margin-bottom: $marginContainer * 3;
-        max-width: 48%;
+$cardMargin: $marginContainer *2;
+
+.cardWrapper {
+    position: relative;
+}
+
+.card {
+    margin: 0 auto;
+    align-self: flex-start;
+    max-width: $maxCardWidth;
+    max-height: $maxCardHeight;
+    width: $cardWidth;
+    height: $cardHeight;
+    min-width: $minCardWidth;
+    min-height: $minCardHeight;
+    overflow: hidden;
+    padding-bottom: 0 !important;
+    border: $cardBorder;
+    border-image: repeating-linear-gradient(45deg, #fff, #fff 1%, #A18276 1%, #A18276 8%) 5;
+    transition: none;
+    transition-duration: .15s;
+    flex: unset;
+
+    @media only screen and (max-width: $smallDevice) {
+        border: none;
     }
 
+    &:hover {
+        border-color: $cardBg;
+        transition-property: border, height;
+
+        >div {
+            width: 100%;
+            height: 100%;
+
+            &::after {
+                box-shadow: none;
+            }
+        }
+
+    }
+
+    >div {
+        width: 100%;
+        height: 100%;
+
+
+
+        &::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            box-shadow: inset 0px 0px 8px $textMain;
+            top: 0;
+            left: 0;
+
+            @media only screen and (max-width: $smallDevice) {
+                box-shadow: none;
+            }
+        }
+
+        >div {
+            &:first-child {
+                width: 100%;
+                height: 100%;
+                transition: none;
+
+                &:before {
+                    content: '';
+                    position: absolute;
+                    width: 100%;
+                    height: 100%;
+                    border: 10px solid $cardBg;
+                    top: 0;
+                    left: 0;
+
+                    @media only screen and (max-width: $smallDevice) {
+                        border: none;
+                    }
+                }
+            }
+
+            background-color: $cardBg;
+
+            @media only screen and (max-width: $smallDevice) {
+                background-color: transparent;
+            }
+
+            img {
+                width: 100%;
+            }
+        }
+    }
+}
+
+.item1 {
+    justify-content: flex-end;
+
+    >div {
+        margin-bottom: $cardMargin;
+
+        >div:first-child {
+            margin: 0;
+
+            @media only screen and (max-width: $smallDevice) {
+                width: 100vw !important;
+                max-width: 100vw !important;
+                max-height: unset;
+                height: auto;
+            }
+        }
+    }
+}
+
+.item2 {
+    justify-content: flex-end;
+    align-items: flex-start;
+
+    @media only screen and (max-width: $smallDevice) {
+        flex-direction: row !important;
+        -webkit-flex-direction: row !important;
+        justify-content: space-between;
+
+        >div {
+            flex: 1;
+            margin: 0 !important;
+            max-height: unset !important;
+            min-height: unset !important;
+            min-width: unset !important;
+            max-width: 48vw !important;
+            height: unset !important;
+            width: auto !important;
+
+            >div {
+                >div {
+                    >div:first-child {
+                        max-height: 48vw !important;
+                    }
+                }
+
+                margin: 0 !important;
+                max-height: unset !important;
+                min-height: unset !important;
+                min-width: unset !important;
+                max-width: unset !important;
+                height: 100% !important;
+                width: 100% !important;
+            }
+        }
+    }
+
+    >div:first-child {
+        margin-right: $cardMargin;
+    }
+
+    >div:last-child {
+        >div {
+            margin: 0;
+            max-width: $maxCardHeight;
+            max-height: $maxCardWidth;
+            width: $cardHeight;
+            height: $cardWidth;
+            min-width: $minCardHeight;
+            min-height: $minCardWidth;
+        }
+    }
+}
+
+.item3 {
+    align-self: center;
+    flex: unset;
+    margin: 0 $cardMargin;
+
+    @media only screen and (max-width: $smallDevice) {
+        margin: $cardMargin 0 !important;
+
+        >div {
+
+            >div {
+                width: 100vw !important;
+                max-width: 100vw !important;
+                max-height: unset;
+                height: auto;
+            }
+        }
+    }
+
+    >div {
+        &:first-child {
+            margin-bottom: $cardMargin;
+        }
+    }
+}
+
+.item4 {
+
+    @media only screen and (max-width: $smallDevice) {
+        >div {
+            width: 100vw !important;
+            max-width: 100vw !important;
+            max-height: unset;
+            height: auto;
+        }
+    }
+
+    >div:first-child {
+        margin-bottom: $cardMargin;
+
+        >div {
+            margin: 0;
+
+            @media only screen and (max-width: $smallDevice) {
+                width: 100vw !important;
+                max-width: 100vw !important;
+                max-height: unset;
+                height: auto;
+            }
+        }
+    }
+}
+
+.item5 {
+    align-items: flex-start;
+
+    @media only screen and (max-width: $smallDevice) {
+        flex-direction: row !important;
+        -webkit-flex-direction: row !important;
+        justify-content: space-between;
+
+        >div {
+            margin: 0 !important;
+            flex: 1;
+            // max-height: unset !important;
+            min-height: unset !important;
+            min-width: unset !important;
+            max-width: 48% !important;
+            // height: auto !important;
+            width: auto !important;
+
+            >div {
+                >div {
+                    >div:first-child {
+                        height: 48vw !important;
+                    }
+                }
+                margin: 0;
+                max-height: unset !important;
+                min-height: unset !important;
+                min-width: unset !important;
+                max-width: unset !important;
+                height: 100% !important;
+                width: 100% !important;
+            }
+        }
+    }
+
+    >div:first-child {
+        >div {
+            margin: 0;
+            margin-right: $cardMargin;
+            max-width: $maxCardHeight;
+            max-height: $maxCardWidth;
+            width: $cardHeight;
+            height: $cardWidth;
+            min-width: $minCardHeight;
+            min-height: $minCardWidth;
+        }
+    }
+
+    >div:last-child {
+        >div {
+            margin: 0;
+        }
+    }
 }
 
 .featuredTitle {
-    padding-top: $paddingContainer * 2;
-    margin-bottom: $paddingContainer * 4;
+    padding-top: $paddingContainer * 4;
+    margin-bottom: $paddingContainer * 3;
     text-transform: uppercase;
     letter-spacing: 1.5px;
 
     @media screen and (max-width: $smallDevice) {
         padding-top: $paddingContainer;
-        margin-top: $paddingContainer/2;
-        margin-bottom: $paddingContainer * 2;
+        margin-top: $paddingContainer*2;
+        margin-bottom: $paddingContainer;
     }
 }
 
 .cardContent {
     @include flexCenter;
+    font-size: smaller;
+    padding-bottom: $paddingContainer;
 
     @media screen and (max-width: $smallDevice) {
         align-items: flex-start;

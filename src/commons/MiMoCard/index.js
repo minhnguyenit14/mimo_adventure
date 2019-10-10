@@ -5,10 +5,14 @@ import cls from './styles.module.scss';
 class MiMoCard extends PureComponent {
     state = {}
     render() {
-        const { title, src, subTitle, description, className, id, onClick, contentClassName, captionClassName } = this.props;
+        const { title, src, subTitle, description, className, id, onClick, contentClassName, captionClassName, ...props } = this.props;
         return (
-            <Container onClick={() => onClick(id)} className={window.classnames(cls.cardContainer, className)}>
-                <Col>
+            <Container
+                onClick={() => onClick(id)}
+                className={window.classnames(cls.cardContainer, className)}
+                {...props}
+            >
+                <Col style={{pointerEvents: 'none'}}>
                     <Image src={src} />
                     <Col className={window.classnames(cls.textContainer, contentClassName)}>
                         {subTitle &&
