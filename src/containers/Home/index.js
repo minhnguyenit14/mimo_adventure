@@ -51,8 +51,6 @@ class Home extends Component {
         );
         this.getPinnedProduct().then(
             pinnedProducts => {
-                pinnedProducts.push(pinnedProducts[0]);
-                pinnedProducts.push(pinnedProducts[1]);
                 this.setState({ pinnedProducts });
             }
         );
