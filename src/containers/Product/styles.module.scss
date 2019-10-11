@@ -105,6 +105,12 @@
     min-height: $superSmallDevice;
     max-height: $largeDevice;
 
+    @media screen and (max-width: $largeDevice) {
+        min-height: $superSmallDevice*.7;
+        max-height: $largeDevice;
+        height: 60vh;
+    }
+
     @media screen and (max-width: $superSmallDevice) {
         min-height: $superSmallDevice*.7;
         max-height: $largeDevice;

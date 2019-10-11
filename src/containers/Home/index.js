@@ -51,6 +51,17 @@ class Home extends Component {
         );
         this.getPinnedProduct().then(
             pinnedProducts => {
+                const MIN_LENGTH = 14;
+                if (pinnedProducts.length > 0
+                    && pinnedProducts.length < MIN_LENGTH) {
+                    let index = 0;
+                    const max = MIN_LENGTH - pinnedProducts.length;
+                    for (let i = 0; i < max; i++) {
+                        index === pinnedProducts.length && (index = 0);
+                        pinnedProducts.push(pinnedProducts[index]);
+                        index++;
+                    }
+                }
                 this.setState({ pinnedProducts });
             }
         );
