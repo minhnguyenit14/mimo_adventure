@@ -312,7 +312,7 @@ class Home extends Component {
                 </Col>
                 <Row className={window.classnames(cls.parallax)}>
                     <Paragraph className={window.classnames(cls.quote)}>
-                        Something motivate, something good...
+                        A friend of nature
                     </Paragraph>
                 </Row>
             </PageLayout >

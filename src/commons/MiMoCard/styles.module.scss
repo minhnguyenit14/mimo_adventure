@@ -4,16 +4,19 @@
     background-color: #fff;
     padding-bottom: $paddingContainer;
 
-    &:hover {
-        cursor: pointer;
-        box-shadow: $boxShadow;
-        -webkit-box-shadow: $boxShadow;
-    }
 
     &:active {
         cursor: pointer;
         opacity: .9;
         box-shadow: none;
+    }
+}
+
+.hover {
+    &:hover {
+        cursor: pointer;
+        box-shadow: $boxShadow;
+        -webkit-box-shadow: $boxShadow;
     }
 }
 

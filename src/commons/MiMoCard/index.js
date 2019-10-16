@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Container, Image, Caption, Heading, Col, Paragraph } from 'app-commons';
 import cls from './styles.module.scss';
+import { isMobile } from 'react-device-detect';
 
 class MiMoCard extends PureComponent {
     state = {}
@@ -9,10 +10,10 @@ class MiMoCard extends PureComponent {
         return (
             <Container
                 onClick={() => onClick(id)}
-                className={window.classnames(cls.cardContainer, className)}
+                className={window.classnames(cls.cardContainer, !isMobile && cls.hover, className)}
                 {...props}
             >
-                <Col style={{pointerEvents: 'none'}}>
+                <Col style={{ pointerEvents: 'none' }}>
                     <Image src={src} />
                     <Col className={window.classnames(cls.textContainer, contentClassName)}>
                         {subTitle &&

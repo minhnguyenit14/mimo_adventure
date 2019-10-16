@@ -5,7 +5,7 @@ export * from './stateHelper';
 export * from './queryHelper';
 export * from './dataHelper';
 
-export const scrollToBody = (delayTime = 3000) => {
+export const scrollToBody = (delayTime = 1500) => {
     setTimeout(() => {
         const productBodyNode = document.getElementById('sliderHeader');
         if (productBodyNode) {

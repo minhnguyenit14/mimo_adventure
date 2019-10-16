@@ -245,7 +245,7 @@ $cardMargin: $marginContainer *2;
             >div {
                 >div {
                     >div:first-child {
-                        max-height: 48vw !important;
+                        height: 48vw !important;
                     }
                 }
 
@@ -354,6 +354,7 @@ $cardMargin: $marginContainer *2;
                         height: 48vw !important;
                     }
                 }
+
                 margin: 0;
                 max-height: unset !important;
                 min-height: unset !important;
@@ -418,12 +419,12 @@ $cardMargin: $marginContainer *2;
     margin: 240px auto !important;
     font-style: italic;
     text-align: center;
-    font-size: 48px !important;
-    color: rgba(255, 255, 255, .67) !important;
+    font-size: 90px !important;
+    color: rgba(255, 255, 255, .6) !important;
 
     @media screen and (max-width: $smallDevice) {
         margin: 80px auto !important;
-
+        font-size: 48px !important;
     }
 
     &::before {

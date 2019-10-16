@@ -83,7 +83,9 @@
     @media screen and (max-width: $mobile) {
         margin: $marginContainer*2 auto !important;
     }
-
+    @media screen and (max-width: $underMobile) {
+        font-size: .8em !important;
+    }
     @media screen and (max-width: $superSmallDevice) {
         font-size: .7em !important;
     }
